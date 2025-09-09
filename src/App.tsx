@@ -2,26 +2,37 @@ import React, { useState } from 'react';
 import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarProvider, SidebarTrigger } from './components/ui/sidebar';
 import { Button } from './components/ui/button';
 import { Badge } from './components/ui/badge';
-import { 
-  Users, 
-  DollarSign, 
-  CreditCard, 
-  Shield, 
-  PiggyBank, 
-  TrendingUp, 
-  Receipt, 
-  BarChart3, 
-  FileText, 
-  Calculator, 
-  Settings, 
-  Building, 
-  UserCheck, 
+import {
+  Users,
+  DollarSign,
+  CreditCard,
+  Shield,
+  PiggyBank,
+  TrendingUp,
+  Receipt,
+  BarChart3,
+  FileText,
+  Calculator,
+  Settings,
+  Building,
+  UserCheck,
   Calendar,
   Menu,
-  Banknote
+  Banknote,
+  LogOut,
+  Home,
+  Wallet,
+  FileCheck,
+  CreditCardIcon
 } from 'lucide-react';
 
-// Import all tab components
+// Import components
+import { LoginPage } from './components/LoginPage';
+import { BorrowerDashboard } from './components/BorrowerDashboard';
+import { KYCVerification } from './components/KYCVerification';
+import { CreditAssessment } from './components/CreditAssessment';
+import { RepaymentTransactions } from './components/RepaymentTransactions';
+import { Statements } from './components/Statements';
 import { BorrowersTab } from './components/BorrowersTab';
 import { LoansTab } from './components/LoansTab';
 import { RepaymentsTab } from './components/RepaymentsTab';
@@ -37,7 +48,8 @@ import { BranchesTab } from './components/BranchesTab';
 import { StaffRolesTab } from './components/StaffRolesTab';
 import { CalendarTab } from './components/CalendarTab';
 
-const navigationItems = [
+// Admin navigation items
+const adminNavigationItems = [
   { id: 'borrowers', label: 'Borrowers', icon: Users, component: BorrowersTab },
   { id: 'loans', label: 'Loans', icon: Banknote, component: LoansTab },
   { id: 'repayments', label: 'Repayments', icon: CreditCard, component: RepaymentsTab },
@@ -54,10 +66,43 @@ const navigationItems = [
   { id: 'calendar', label: 'Calendar', icon: Calendar, component: CalendarTab },
 ];
 
+// Borrower navigation items (simplified)
+const borrowerNavigationItems = [
+  { id: 'dashboard', label: 'Dashboard', icon: Home, component: BorrowerDashboard },
+  { id: 'loans', label: 'My Loans', icon: CreditCardIcon, component: LoansTab },
+  { id: 'repayments', label: 'Repayments', icon: Wallet, component: RepaymentTransactions },
+  { id: 'kyc', label: 'KYC Verification', icon: FileCheck, component: KYCVerification },
+  { id: 'credit', label: 'Credit Assessment', icon: TrendingUp, component: CreditAssessment },
+  { id: 'statements', label: 'Statements', icon: FileText, component: Statements },
+];
+
 export default function App() {
-  const [activeTab, setActiveTab] = useState('borrowers');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState<'admin' | 'borrower'>('borrower');
+  const [userEmail, setUserEmail] = useState('');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const handleLogin = (role: 'admin' | 'borrower', email: string) => {
+    setIsAuthenticated(true);
+    setUserRole(role);
+    setUserEmail(email);
+    setActiveTab(role === 'admin' ? 'borrowers' : 'dashboard');
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setUserRole('borrower');
+    setUserEmail('');
+    setActiveTab('dashboard');
+  };
+
+  // Show login page if not authenticated
+  if (!isAuthenticated) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
+  const navigationItems = userRole === 'admin' ? adminNavigationItems : borrowerNavigationItems;
   const ActiveComponent = navigationItems.find(item => item.id === activeTab)?.component || BorrowersTab;
 
   return (
@@ -108,17 +153,34 @@ export default function App() {
                   {navigationItems.find(item => item.id === activeTab)?.label}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Manage your {navigationItems.find(item => item.id === activeTab)?.label.toLowerCase()}
+                  {userRole === 'admin'
+                    ? `Manage your ${navigationItems.find(item => item.id === activeTab)?.label.toLowerCase()}`
+                    : `Welcome back, ${userEmail.split('@')[0]}`
+                  }
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-4">
+              <Badge variant="outline" className="hidden sm:flex">
+                {userRole === 'admin' ? 'Admin' : 'Borrower'}
+              </Badge>
               <Badge variant="outline" className="hidden sm:flex">
                 Live
               </Badge>
-              <Button variant="outline" size="sm">
-                Export
+              {userRole === 'admin' && (
+                <Button variant="outline" size="sm">
+                  Export
+                </Button>
+              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                className="flex items-center gap-2"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
               </Button>
             </div>
           </header>
