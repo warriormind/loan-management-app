@@ -28,8 +28,8 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
     },
     {
       icon: Users,
-      title: 'Borrower Management',
-      description: 'Complete borrower profiles, KYC verification, and credit assessment tools.'
+      title: 'Client Management',
+      description: 'Complete client profiles, KYC verification, and credit assessment tools.'
     },
     {
       icon: CreditCard,
@@ -58,7 +58,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
     'Real-time portfolio monitoring',
     'Automated repayment scheduling',
     'Advanced risk assessment tools',
-    'Comprehensive borrower management',
+    'Comprehensive client management',
     'Detailed financial reporting'
   ];
 

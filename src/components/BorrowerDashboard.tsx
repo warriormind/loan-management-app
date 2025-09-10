@@ -21,7 +21,7 @@ import {
   Eye
 } from 'lucide-react';
 
-const borrowerData = {
+const clientData = {
   name: "John Smith",
   email: "john.smith@email.com",
   creditScore: 720,
@@ -75,13 +75,13 @@ export function BorrowerDashboard() {
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">Welcome back, {borrowerData.name}!</h1>
+            <h1 className="text-2xl font-bold">Welcome back, {clientData.name}!</h1>
             <p className="text-blue-100 mt-1">Here's your loan management overview</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
               <p className="text-sm text-blue-100">Credit Score</p>
-              <p className="text-2xl font-bold">{borrowerData.creditScore}</p>
+              <p className="text-2xl font-bold">{clientData.creditScore}</p>
             </div>
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
               <Target className="w-8 h-8" />
@@ -97,7 +97,7 @@ export function BorrowerDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Outstanding Balance</p>
-                <p className="text-2xl font-semibold text-red-600">{borrowerData.outstandingBalance}</p>
+                <p className="text-2xl font-semibold text-red-600">{clientData.outstandingBalance}</p>
               </div>
               <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
                 <Wallet className="w-6 h-6 text-red-600" />
@@ -111,8 +111,8 @@ export function BorrowerDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Next Payment</p>
-                <p className="text-2xl font-semibold">{borrowerData.nextPayment.amount}</p>
-                <p className="text-sm text-muted-foreground">Due in {borrowerData.nextPayment.daysLeft} days</p>
+                <p className="text-2xl font-semibold">{clientData.nextPayment.amount}</p>
+                <p className="text-sm text-muted-foreground">Due in {clientData.nextPayment.daysLeft} days</p>
               </div>
               <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
                 <Calendar className="w-6 h-6 text-orange-600" />
@@ -126,7 +126,7 @@ export function BorrowerDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total Loans</p>
-                <p className="text-2xl font-semibold">{borrowerData.totalLoans}</p>
+                <p className="text-2xl font-semibold">{clientData.totalLoans}</p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <CreditCard className="w-6 h-6 text-blue-600" />
@@ -141,9 +141,9 @@ export function BorrowerDashboard() {
               <div>
                 <p className="text-sm text-muted-foreground">KYC Status</p>
                 <div className="flex items-center gap-2 mt-1">
-                  {getKycStatusIcon(borrowerData.kycStatus)}
-                  <Badge className={getKycStatusColor(borrowerData.kycStatus)}>
-                    {borrowerData.kycStatus.charAt(0).toUpperCase() + borrowerData.kycStatus.slice(1)}
+                  {getKycStatusIcon(clientData.kycStatus)}
+                  <Badge className={getKycStatusColor(clientData.kycStatus)}>
+                    {clientData.kycStatus.charAt(0).toUpperCase() + clientData.kycStatus.slice(1)}
                   </Badge>
                 </div>
               </div>
@@ -178,7 +178,7 @@ export function BorrowerDashboard() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Current Score</span>
-                    <span className="text-2xl font-bold text-blue-600">{borrowerData.creditScore}</span>
+                    <span className="text-2xl font-bold text-blue-600">{clientData.creditScore}</span>
                   </div>
                   <Progress value={72} className="h-3" />
                   <p className="text-sm text-muted-foreground">
@@ -221,7 +221,7 @@ export function BorrowerDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {borrowerData.recentPayments.slice(0, 3).map((payment) => (
+                {clientData.recentPayments.slice(0, 3).map((payment) => (
                   <div key={payment.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
@@ -255,7 +255,7 @@ export function BorrowerDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {borrowerData.upcomingPayments.map((payment) => (
+                  {clientData.upcomingPayments.map((payment) => (
                     <div key={payment.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div>
                         <p className="font-medium">{payment.amount}</p>
@@ -280,7 +280,7 @@ export function BorrowerDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {borrowerData.recentPayments.map((payment) => (
+                  {clientData.recentPayments.map((payment) => (
                     <div key={payment.id} className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
                       <div>
                         <p className="font-medium">{payment.amount}</p>
@@ -304,7 +304,7 @@ export function BorrowerDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {borrowerData.loanApplications.map((application) => (
+                {clientData.loanApplications.map((application) => (
                   <div key={application.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div>
                       <p className="font-medium">{application.amount}</p>

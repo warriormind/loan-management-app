@@ -51,7 +51,7 @@ import { CalendarTab } from './components/CalendarTab';
 
 // Admin navigation items
 const adminNavigationItems = [
-  { id: 'borrowers', label: 'Borrowers', icon: Users, component: BorrowersTab },
+  { id: 'clients', label: 'Clients', icon: Users, component: BorrowersTab },
   { id: 'loans', label: 'Loans', icon: Banknote, component: LoansTab },
   { id: 'repayments', label: 'Repayments', icon: CreditCard, component: RepaymentsTab },
   { id: 'collateral', label: 'Loan Collateral', icon: Shield, component: CollateralTab },
@@ -67,8 +67,8 @@ const adminNavigationItems = [
   { id: 'calendar', label: 'Calendar', icon: Calendar, component: CalendarTab },
 ];
 
-// Borrower navigation items (simplified)
-const borrowerNavigationItems = [
+// Client navigation items (simplified)
+const clientNavigationItems = [
   { id: 'dashboard', label: 'Dashboard', icon: Home, component: BorrowerDashboard },
   { id: 'loans', label: 'My Loans', icon: CreditCardIcon, component: LoansTab },
   { id: 'repayments', label: 'Repayments', icon: Wallet, component: RepaymentTransactions },
@@ -79,22 +79,22 @@ const borrowerNavigationItems = [
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userRole, setUserRole] = useState<'admin' | 'borrower'>('borrower');
+  const [userRole, setUserRole] = useState<'admin' | 'client'>('client');
   const [userEmail, setUserEmail] = useState('');
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentView, setCurrentView] = useState<'landing' | 'login'>('landing');
 
-  const handleLogin = (role: 'admin' | 'borrower', email: string) => {
+  const handleLogin = (role: 'admin' | 'client', email: string) => {
     setIsAuthenticated(true);
     setUserRole(role);
     setUserEmail(email);
-    setActiveTab(role === 'admin' ? 'borrowers' : 'dashboard');
+    setActiveTab(role === 'admin' ? 'clients' : 'dashboard');
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setUserRole('borrower');
+    setUserRole('client');
     setUserEmail('');
     setActiveTab('dashboard');
   };
@@ -113,7 +113,7 @@ export default function App() {
     return <LoginPage onLogin={handleLogin} />;
   }
 
-  const navigationItems = userRole === 'admin' ? adminNavigationItems : borrowerNavigationItems;
+  const navigationItems = userRole === 'admin' ? adminNavigationItems : clientNavigationItems;
   const ActiveComponent = navigationItems.find(item => item.id === activeTab)?.component || BorrowersTab;
 
   return (
@@ -174,7 +174,7 @@ export default function App() {
 
             <div className="flex items-center gap-4">
               <Badge variant="outline" className="hidden sm:flex">
-                {userRole === 'admin' ? 'Admin' : 'Borrower'}
+                {userRole === 'admin' ? 'Admin' : 'Client'}
               </Badge>
               <Badge variant="outline" className="hidden sm:flex">
                 Live

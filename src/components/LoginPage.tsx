@@ -19,14 +19,14 @@ import {
 } from 'lucide-react';
 
 interface LoginPageProps {
-  onLogin: (role: 'admin' | 'borrower', email: string) => void;
+  onLogin: (role: 'admin' | 'client', email: string) => void;
 }
 
 export function LoginPage({ onLogin }: LoginPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedRole, setSelectedRole] = useState<'admin' | 'borrower'>('borrower');
+  const [selectedRole, setSelectedRole] = useState<'admin' | 'client'>('client');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,13 +53,13 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             <p className="text-gray-600 text-sm">Access your loan management account</p>
           </CardHeader>
           <CardContent>
-            <Tabs value={selectedRole} onValueChange={(value) => setSelectedRole(value as 'admin' | 'borrower')} className="w-full">
+            <Tabs value={selectedRole} onValueChange={(value) => setSelectedRole(value as 'admin' | 'client')} className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="borrower">Borrower</TabsTrigger>
+                <TabsTrigger value="client">Client</TabsTrigger>
                 <TabsTrigger value="admin">Admin</TabsTrigger>
               </TabsList>
 
-              <TabsContent value={selectedRole}>
+              <TabsContent value={selectedRole} className="mt-4">
                 <form onSubmit={handleSubmit}>
                   <div className="space-y-4">
                     <div>

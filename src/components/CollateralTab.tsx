@@ -14,7 +14,7 @@ const mockCollateral = [
   {
     id: 'C001',
     loanId: 'L001',
-    borrowerName: 'John Smith',
+    clientName: 'John Smith',
     type: 'Real Estate',
     description: '3-bedroom house, 2,200 sq ft',
     location: '123 Main St, New York, NY',
@@ -28,7 +28,7 @@ const mockCollateral = [
   {
     id: 'C002',
     loanId: 'L002',
-    borrowerName: 'Sarah Johnson',
+    clientName: 'Sarah Johnson',
     type: 'Vehicle',
     description: '2021 Toyota Camry',
     location: 'Los Angeles, CA',
@@ -42,7 +42,7 @@ const mockCollateral = [
   {
     id: 'C003',
     loanId: 'L003',
-    borrowerName: 'Michael Brown',
+    clientName: 'Michael Brown',
     type: 'Equipment',
     description: 'Industrial printing equipment',
     location: 'Chicago, IL',
@@ -56,7 +56,7 @@ const mockCollateral = [
   {
     id: 'C004',
     loanId: 'L004',
-    borrowerName: 'Emily Davis',
+    clientName: 'Emily Davis',
     type: 'Real Estate',
     description: 'Commercial office space, 5,000 sq ft',
     location: '789 Business Ave, Houston, TX',
@@ -75,8 +75,8 @@ export function CollateralTab() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   const filteredCollateral = mockCollateral.filter(item => {
-    const matchesSearch = item.borrowerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.loanId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = item.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          item.loanId.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          item.id.toLowerCase().includes(searchTerm.toLowerCase());
     
@@ -298,7 +298,7 @@ export function CollateralTab() {
                 <TableRow>
                   <TableHead>ID</TableHead>
                   <TableHead>Loan ID</TableHead>
-                  <TableHead>Borrower</TableHead>
+                  <TableHead>Client</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Description</TableHead>
                   <TableHead>Location</TableHead>
@@ -314,7 +314,7 @@ export function CollateralTab() {
                   <TableRow key={item.id}>
                     <TableCell className="font-medium">{item.id}</TableCell>
                     <TableCell>{item.loanId}</TableCell>
-                    <TableCell className="font-medium">{item.borrowerName}</TableCell>
+                    <TableCell className="font-medium">{item.clientName}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         {getTypeIcon(item.type)}

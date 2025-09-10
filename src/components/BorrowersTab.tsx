@@ -60,10 +60,10 @@ export function BorrowersTab() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
-  const filteredBorrowers = mockBorrowers.filter(borrower =>
-    borrower.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    borrower.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    borrower.id.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredClients = mockBorrowers.filter(client =>
+    client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    client.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    client.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const getStatusColor = (status: string) => {
@@ -89,7 +89,7 @@ export function BorrowersTab() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Total Borrowers</p>
+                <p className="text-sm text-muted-foreground">Total Clients</p>
                 <p className="text-2xl font-semibold">1,247</p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -103,7 +103,7 @@ export function BorrowersTab() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Active Borrowers</p>
+                <p className="text-sm text-muted-foreground">Active Clients</p>
                 <p className="text-2xl font-semibold">1,089</p>
               </div>
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -146,12 +146,12 @@ export function BorrowersTab() {
       <Card>
         <CardHeader>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <CardTitle>Borrowers Management</CardTitle>
+            <CardTitle>Clients Management</CardTitle>
             <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
               <div className="relative flex-1 md:w-80">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search borrowers..."
+                  placeholder="Search clients..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -161,12 +161,12 @@ export function BorrowersTab() {
                 <DialogTrigger asChild>
                   <Button className="flex items-center gap-2">
                     <Plus className="w-4 h-4" />
-                    Add Borrower
+                    Add Client
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-md">
                   <DialogHeader>
-                    <DialogTitle>Add New Borrower</DialogTitle>
+                    <DialogTitle>Add New Client</DialogTitle>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
                     <div className="grid gap-2">
@@ -208,7 +208,7 @@ export function BorrowersTab() {
                       Cancel
                     </Button>
                     <Button onClick={() => setIsAddDialogOpen(false)}>
-                      Add Borrower
+                      Add Client
                     </Button>
                   </div>
                 </DialogContent>
@@ -222,7 +222,7 @@ export function BorrowersTab() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Borrower ID</TableHead>
+                  <TableHead>Client ID</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead>Contact</TableHead>
                   <TableHead>Credit Score</TableHead>
@@ -233,33 +233,33 @@ export function BorrowersTab() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredBorrowers.map((borrower) => (
-                  <TableRow key={borrower.id}>
-                    <TableCell className="font-medium">{borrower.id}</TableCell>
+                {filteredClients.map((client) => (
+                  <TableRow key={client.id}>
+                    <TableCell className="font-medium">{client.id}</TableCell>
                     <TableCell>
                       <div>
-                        <div className="font-medium">{borrower.name}</div>
-                        <div className="text-sm text-muted-foreground">{borrower.address}</div>
+                        <div className="font-medium">{client.name}</div>
+                        <div className="text-sm text-muted-foreground">{client.address}</div>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div>
-                        <div className="text-sm">{borrower.email}</div>
-                        <div className="text-sm text-muted-foreground">{borrower.phone}</div>
+                        <div className="text-sm">{client.email}</div>
+                        <div className="text-sm text-muted-foreground">{client.phone}</div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className={`font-semibold ${getCreditScoreColor(borrower.creditScore)}`}>
-                        {borrower.creditScore}
+                      <span className={`font-semibold ${getCreditScoreColor(client.creditScore)}`}>
+                        {client.creditScore}
                       </span>
                     </TableCell>
                     <TableCell>
-                      <Badge className={getStatusColor(borrower.status)}>
-                        {borrower.status}
+                      <Badge className={getStatusColor(client.status)}>
+                        {client.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-medium">{borrower.totalLoans}</TableCell>
-                    <TableCell>{borrower.lastPayment}</TableCell>
+                    <TableCell className="font-medium">{client.totalLoans}</TableCell>
+                    <TableCell>{client.lastPayment}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <Button variant="ghost" size="sm">
