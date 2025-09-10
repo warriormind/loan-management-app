@@ -28,6 +28,7 @@ import {
 
 // Import components
 import { LoginPage } from './components/LoginPage';
+import { LandingPage } from './components/LandingPage';
 import { BorrowerDashboard } from './components/BorrowerDashboard';
 import { KYCVerification } from './components/KYCVerification';
 import { CreditAssessment } from './components/CreditAssessment';
@@ -82,6 +83,7 @@ export default function App() {
   const [userEmail, setUserEmail] = useState('');
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentView, setCurrentView] = useState<'landing' | 'login'>('landing');
 
   const handleLogin = (role: 'admin' | 'borrower', email: string) => {
     setIsAuthenticated(true);
@@ -97,8 +99,17 @@ export default function App() {
     setActiveTab('dashboard');
   };
 
+  const handleGetStarted = () => {
+    setCurrentView('login');
+  };
+
+  // Show landing page first
+  if (!isAuthenticated && currentView === 'landing') {
+    return <LandingPage onGetStarted={handleGetStarted} />;
+  }
+
   // Show login page if not authenticated
-  if (!isAuthenticated) {
+  if (!isAuthenticated && currentView === 'login') {
     return <LoginPage onLogin={handleLogin} />;
   }
 
