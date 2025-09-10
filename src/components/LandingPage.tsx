@@ -63,13 +63,13 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f5f8ff] font-['Manrope']">
+    <div className="min-h-screen bg-[#E8F4FD] font-['Manrope']">
       {/* Navigation */}
       <nav className="bg-white shadow-sm border-b border-[#dee3ed]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#a191f5] rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-[#00AEEF] rounded-lg flex items-center justify-center">
                 <Banknote className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -81,13 +81,13 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <Button
                 variant="ghost"
                 onClick={onGetStarted}
-                className="text-[#a191f5] hover:text-[#8f7fff] hover:bg-[#f5f8ff]"
+                className="text-[#00AEEF] hover:text-[#0099CC] hover:bg-[#E8F4FD]"
               >
                 Login
               </Button>
               <Button
                 onClick={onGetStarted}
-                className="bg-[#a191f5] hover:bg-[#8f7fff] text-white"
+                className="bg-[#00AEEF] hover:bg-[#0099CC] text-white"
               >
                 Get Started
               </Button>
@@ -112,7 +112,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <Button
                 size="lg"
                 onClick={onGetStarted}
-                className="bg-[#a191f5] hover:bg-[#8f7fff] text-white px-8 py-3 text-lg"
+                className="bg-[#00AEEF] hover:bg-[#0099CC] text-white px-8 py-3 text-lg"
               >
                 Get Started Free
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -121,7 +121,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 size="lg"
                 variant="outline"
                 onClick={onGetStarted}
-                className="border-[#a191f5] text-[#a191f5] hover:bg-[#a191f5] hover:text-white px-8 py-3 text-lg"
+                className="border-[#00AEEF] text-[#00AEEF] hover:bg-[#00AEEF] hover:text-white px-8 py-3 text-lg"
               >
                 Login to Account
               </Button>
@@ -146,7 +146,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             {features.map((feature, index) => (
               <Card key={index} className="border border-[#dee3ed] hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
-                  <div className="w-12 h-12 bg-[#a191f5] rounded-lg flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 bg-[#00AEEF] rounded-lg flex items-center justify-center mb-4">
                     <feature.icon className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -203,18 +203,18 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-[#a191f5]">
+      <section className="py-20 bg-[#00AEEF]">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             Ready to Transform Your Lending Business?
           </h2>
           <p className="text-xl text-white/90 mb-8">
-            Join LoanPro today and experience the future of loan management
+            Join LoanPro today and experience the future of client management
           </p>
           <Button
             size="lg"
             onClick={onGetStarted}
-            className="bg-white text-[#a191f5] hover:bg-gray-50 px-8 py-3 text-lg font-semibold"
+            className="bg-white text-[#00AEEF] hover:bg-gray-50 px-8 py-3 text-lg font-semibold"
           >
             Start Your Free Trial
             <ArrowRight className="ml-2 w-5 h-5" />
@@ -228,7 +228,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-[#a191f5] rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-[#00AEEF] rounded-lg flex items-center justify-center">
                   <Banknote className="w-6 h-6 text-white" />
                 </div>
                 <div>

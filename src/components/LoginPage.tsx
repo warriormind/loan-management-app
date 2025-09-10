@@ -36,12 +36,12 @@ export function LoginPage({ onLogin }: LoginPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f8ff] flex items-center justify-center p-4 font-['Manrope']">
+    <div className="min-h-screen bg-[#E8F4FD] flex items-center justify-center p-4 font-['Manrope']">
       <div className="w-full max-w-md">
         <Card className="shadow-lg border border-[#dee3ed] bg-white">
           <CardHeader className="text-center">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-[#a191f5] rounded-lg flex items-center justify-center">
+              <div className="w-12 h-12 bg-[#00AEEF] rounded-lg flex items-center justify-center">
                 <Banknote className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -50,7 +50,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
               </div>
             </div>
             <CardTitle className="text-2xl font-bold text-gray-800">Login</CardTitle>
-            <p className="text-gray-600 text-sm">Access your loan management account</p>
+            <p className="text-gray-600 text-sm">Access your client management account</p>
           </CardHeader>
           <CardContent>
             <Tabs value={selectedRole} onValueChange={(value) => setSelectedRole(value as 'admin' | 'client')} className="w-full">
@@ -103,7 +103,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
                     <Button
                       type="submit"
-                      className="w-full bg-[#a191f5] hover:bg-[#8f7fff] text-white font-medium"
+                      className="w-full bg-[#00AEEF] hover:bg-[#0099CC] text-white font-medium"
                       size="lg"
                     >
                       Login
@@ -116,7 +116,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
             <div className="text-center pt-4">
               <p className="text-sm text-gray-600">
                 Need help?{' '}
-                <button className="text-[#a191f5] hover:text-[#8f7fff] hover:underline font-medium">
+                <button className="text-[#00AEEF] hover:text-[#0099CC] hover:underline font-medium">
                   Contact support
                 </button>
               </p>
