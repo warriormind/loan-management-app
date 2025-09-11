@@ -26,6 +26,7 @@ import {
   AlertTriangle,
   Zap
 } from 'lucide-react';
+import { ClientChatbot } from './ClientChatbot';
 
 const clientData = {
   name: "John Smith",
@@ -470,6 +471,9 @@ export function BorrowerDashboard() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Client Chatbot */}
+      <ClientChatbot />
     </div>
   );
 }

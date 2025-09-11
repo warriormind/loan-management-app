@@ -36,6 +36,7 @@ import { RepaymentTransactions } from './components/RepaymentTransactions';
 import { Statements } from './components/Statements';
 import { BorrowersTab } from './components/BorrowersTab';
 import { LoansTab } from './components/LoansTab';
+import { CreditRiskModule } from './components/CreditRiskModule';
 import { RepaymentsTab } from './components/RepaymentsTab';
 import { CollateralTab } from './components/CollateralTab';
 import { SavingsTab } from './components/SavingsTab';
@@ -61,6 +62,7 @@ const adminNavigationItems = [
   { id: 'charts', label: 'Charts', icon: BarChart3, component: ChartsTab },
   { id: 'reports', label: 'Reports', icon: FileText, component: ReportsTab },
   { id: 'accounting', label: 'Accounting', icon: Calculator, component: AccountingTab },
+  { id: 'risk', label: 'Credit & Risk', icon: Shield, component: CreditRiskModule },
   { id: 'settings', label: 'Account Settings', icon: Settings, component: SettingsTab },
   { id: 'branches', label: 'Branches', icon: Building, component: BranchesTab },
   { id: 'staff', label: 'Staff & Roles', icon: UserCheck, component: StaffRolesTab },
