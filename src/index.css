@@ -410,6 +410,47 @@
     color: var(--foreground);
   }
 
+  /* Responsive background adjustments */
+  @media (max-width: 768px) {
+    body {
+      background-attachment: scroll;
+      background-size: cover;
+      background-position: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    body {
+      background-attachment: scroll;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+
+  /* Ensure content fits properly on all screen sizes */
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: 100svh; /* Use small viewport height for mobile */
+  }
+
+  /* Responsive container adjustments */
+  @media (max-width: 640px) {
+    .max-w-7xl {
+      max-width: 100%;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .max-w-7xl {
+      max-width: 100%;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
   :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) h1 {
     font-size: var(--text-2xl);
     font-weight: var(--font-weight-medium);
