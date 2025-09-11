@@ -18,7 +18,13 @@ import {
   BarChart3,
   Plus,
   Download,
-  Eye
+  Eye,
+  Bell,
+  MessageSquare,
+  Upload,
+  RefreshCw,
+  AlertTriangle,
+  Zap
 } from 'lucide-react';
 
 const clientData = {
@@ -32,14 +38,33 @@ const clientData = {
     dueDate: "2024-01-25",
     daysLeft: 5
   },
+  daysOverdue: 0,
+  activeLoans: [
+    {
+      id: "LN001",
+      amount: "K25,000",
+      outstanding: "K12,500",
+      nextPayment: "K2,500",
+      dueDate: "2024-01-25",
+      daysOverdue: 0,
+      status: "active"
+    }
+  ],
   recentPayments: [
-    { id: "PAY001", amount: "K2,500", date: "2024-01-10", status: "completed" },
-    { id: "PAY002", amount: "K2,500", date: "2024-01-05", status: "completed" },
-    { id: "PAY003", amount: "K2,500", date: "2023-12-25", status: "completed" },
+    { id: "PAY001", amount: "K2,500", date: "2024-01-10", status: "completed", loanId: "LN001" },
+    { id: "PAY002", amount: "K2,500", date: "2024-01-05", status: "completed", loanId: "LN001" },
+    { id: "PAY003", amount: "K2,500", date: "2023-12-25", status: "completed", loanId: "LN001" },
+    { id: "PAY004", amount: "K2,500", date: "2023-12-10", status: "completed", loanId: "LN001" },
+    { id: "PAY005", amount: "K2,500", date: "2023-11-25", status: "completed", loanId: "LN001" },
   ],
   upcomingPayments: [
-    { id: "PAY004", amount: "K2,500", dueDate: "2024-01-25", status: "pending" },
-    { id: "PAY005", amount: "K2,500", dueDate: "2024-02-05", status: "pending" },
+    { id: "PAY006", amount: "K2,500", dueDate: "2024-01-25", status: "pending", loanId: "LN001" },
+    { id: "PAY007", amount: "K2,500", dueDate: "2024-02-05", status: "pending", loanId: "LN001" },
+  ],
+  notifications: [
+    { id: "NOT001", type: "payment", message: "Payment due in 5 days", unread: true, date: "2024-01-20" },
+    { id: "NOT002", type: "info", message: "Your loan application has been approved", unread: false, date: "2024-01-18" },
+    { id: "NOT003", type: "warning", message: "Please upload your latest payslip", unread: true, date: "2024-01-15" },
   ],
   kycStatus: "verified",
   loanApplications: [
@@ -72,13 +97,23 @@ export function BorrowerDashboard() {
   return (
     <div className="space-y-6">
       {/* Welcome Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white">
+      <div className="bg-gradient-to-r from-[#00AEEF] to-[#00CED1] rounded-lg p-6 text-white">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">Welcome back, {clientData.name}!</h1>
-            <p className="text-blue-100 mt-1">Here's your loan management overview</p>
+            <p className="text-blue-100 mt-1">Here's your client management overview</p>
           </div>
           <div className="flex items-center gap-4">
+            <div className="relative">
+              <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                <Bell className="w-5 h-5" />
+                {clientData.notifications.filter(n => n.unread).length > 0 && (
+                  <Badge className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs bg-red-500">
+                    {clientData.notifications.filter(n => n.unread).length}
+                  </Badge>
+                )}
+              </Button>
+            </div>
             <div className="text-right">
               <p className="text-sm text-blue-100">Credit Score</p>
               <p className="text-2xl font-bold">{clientData.creditScore}</p>
@@ -90,21 +125,24 @@ export function BorrowerDashboard() {
         </div>
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Outstanding Balance</p>
-                <p className="text-2xl font-semibold text-red-600">{clientData.outstandingBalance}</p>
+      {/* Active Loan Summary */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {clientData.activeLoans.map((loan) => (
+          <Card key={loan.id} className="border-l-4 border-l-[#00AEEF]">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Outstanding Balance</p>
+                  <p className="text-2xl font-semibold text-red-600">{loan.outstanding}</p>
+                  <p className="text-xs text-muted-foreground">Loan {loan.id}</p>
+                </div>
+                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                  <Wallet className="w-6 h-6 text-red-600" />
+                </div>
               </div>
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                <Wallet className="w-6 h-6 text-red-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        ))}
 
         <Card>
           <CardContent className="p-6">
@@ -112,10 +150,22 @@ export function BorrowerDashboard() {
               <div>
                 <p className="text-sm text-muted-foreground">Next Payment</p>
                 <p className="text-2xl font-semibold">{clientData.nextPayment.amount}</p>
-                <p className="text-sm text-muted-foreground">Due in {clientData.nextPayment.daysLeft} days</p>
+                <p className="text-sm text-muted-foreground">Due: {clientData.nextPayment.dueDate}</p>
+                {clientData.daysOverdue > 0 && (
+                  <div className="flex items-center gap-1 mt-1">
+                    <AlertTriangle className="w-4 h-4 text-red-500" />
+                    <span className="text-xs text-red-600 font-medium">
+                      {clientData.daysOverdue} days overdue
+                    </span>
+                  </div>
+                )}
               </div>
-              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                <Calendar className="w-6 h-6 text-orange-600" />
+              <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                clientData.daysOverdue > 0 ? 'bg-red-100' : 'bg-orange-100'
+              }`}>
+                <Calendar className={`w-6 h-6 ${
+                  clientData.daysOverdue > 0 ? 'text-red-600' : 'text-orange-600'
+                }`} />
               </div>
             </div>
           </CardContent>
@@ -125,11 +175,12 @@ export function BorrowerDashboard() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Total Loans</p>
-                <p className="text-2xl font-semibold">{clientData.totalLoans}</p>
+                <p className="text-sm text-muted-foreground">Next Installment</p>
+                <p className="text-2xl font-semibold">{clientData.nextPayment.amount}</p>
+                <p className="text-sm text-muted-foreground">Due in {clientData.nextPayment.daysLeft} days</p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <CreditCard className="w-6 h-6 text-blue-600" />
+                <DollarSign className="w-6 h-6 text-blue-600" />
               </div>
             </div>
           </CardContent>
@@ -154,6 +205,34 @@ export function BorrowerDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Notifications & Messages */}
+      {clientData.notifications.filter(n => n.unread).length > 0 && (
+        <Card className="border-l-4 border-l-orange-500">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Bell className="w-5 h-5 text-orange-500" />
+              Notifications ({clientData.notifications.filter(n => n.unread).length})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {clientData.notifications.filter(n => n.unread).slice(0, 3).map((notification) => (
+                <div key={notification.id} className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg">
+                  <div className={`w-2 h-2 rounded-full mt-2 ${
+                    notification.type === 'warning' ? 'bg-red-500' :
+                    notification.type === 'payment' ? 'bg-orange-500' : 'bg-blue-500'
+                  }`} />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{notification.message}</p>
+                    <p className="text-xs text-muted-foreground">{notification.date}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
@@ -191,53 +270,81 @@ export function BorrowerDashboard() {
             {/* Quick Actions */}
             <Card>
               <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Zap className="w-5 h-5" />
+                  Quick Actions
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button className="w-full justify-start" variant="outline">
+                <Button className="w-full justify-start bg-[#00AEEF] hover:bg-[#0099CC] text-white">
                   <Plus className="w-4 h-4 mr-2" />
-                  Apply for New Loan
+                  Apply for Loan
                 </Button>
                 <Button className="w-full justify-start" variant="outline">
                   <CreditCard className="w-4 h-4 mr-2" />
                   Make Payment
                 </Button>
                 <Button className="w-full justify-start" variant="outline">
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Request Restructure
+                </Button>
+                <Button className="w-full justify-start" variant="outline">
+                  <Upload className="w-4 h-4 mr-2" />
+                  Upload Documents
+                </Button>
+                <Button className="w-full justify-start" variant="outline">
                   <Download className="w-4 h-4 mr-2" />
                   Download Statement
                 </Button>
                 <Button className="w-full justify-start" variant="outline">
-                  <Eye className="w-4 h-4 mr-2" />
-                  View Loan Details
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  Contact Officer
                 </Button>
               </CardContent>
             </Card>
           </div>
 
-          {/* Recent Activity */}
+          {/* Recent Transactions */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5" />
+                Recent Transactions
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {clientData.recentPayments.slice(0, 3).map((payment) => (
-                  <div key={payment.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                {clientData.recentPayments.slice(0, 5).map((payment) => (
+                  <div key={payment.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                        <CheckCircle className="w-4 h-4 text-green-600" />
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                        payment.status === 'completed' ? 'bg-green-100' : 'bg-yellow-100'
+                      }`}>
+                        {payment.status === 'completed' ? (
+                          <CheckCircle className="w-5 h-5 text-green-600" />
+                        ) : (
+                          <Clock className="w-5 h-5 text-yellow-600" />
+                        )}
                       </div>
                       <div>
-                        <p className="font-medium">Payment Received</p>
+                        <p className="font-medium">Payment {payment.status === 'completed' ? 'Received' : 'Pending'}</p>
                         <p className="text-sm text-muted-foreground">{payment.date}</p>
+                        <p className="text-xs text-muted-foreground">Loan {payment.loanId}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-green-600">{payment.amount}</p>
+                      <p className={`font-semibold ${
+                        payment.status === 'completed' ? 'text-green-600' : 'text-yellow-600'
+                      }`}>
+                        {payment.amount}
+                      </p>
                       <p className="text-sm text-muted-foreground">{payment.id}</p>
                     </div>
                   </div>
                 ))}
+                <Button variant="outline" className="w-full">
+                  View All Transactions
+                </Button>
               </div>
             </CardContent>
           </Card>
