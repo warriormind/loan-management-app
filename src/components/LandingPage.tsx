@@ -24,32 +24,38 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
     {
       icon: Banknote,
       title: 'Loan Management',
-      description: 'Comprehensive loan processing, approval, and monitoring system for efficient lending operations.'
+      description: 'Comprehensive loan processing, approval, and monitoring system for efficient lending operations.',
+      color: 'from-blue-500 to-cyan-500'
     },
     {
       icon: Users,
       title: 'Client Management',
-      description: 'Complete client profiles, KYC verification, and credit assessment tools.'
+      description: 'Complete client profiles, KYC verification, and credit assessment tools.',
+      color: 'from-purple-500 to-pink-500'
     },
     {
       icon: CreditCard,
       title: 'Repayment Tracking',
-      description: 'Automated repayment scheduling, payment processing, and delinquency management.'
+      description: 'Automated repayment scheduling, payment processing, and delinquency management.',
+      color: 'from-green-500 to-teal-500'
     },
     {
       icon: Shield,
       title: 'Risk Assessment',
-      description: 'Advanced credit scoring, risk analysis, and collateral management features.'
+      description: 'Advanced credit scoring, risk analysis, and collateral management features.',
+      color: 'from-orange-500 to-red-500'
     },
     {
       icon: PiggyBank,
       title: 'Savings Management',
-      description: 'Savings account management with interest calculations and withdrawal tracking.'
+      description: 'Savings account management with interest calculations and withdrawal tracking.',
+      color: 'from-yellow-500 to-orange-500'
     },
     {
       icon: BarChart3,
       title: 'Financial Reporting',
-      description: 'Comprehensive reports, analytics, and financial statements for informed decision making.'
+      description: 'Comprehensive reports, analytics, and financial statements for informed decision making.',
+      color: 'from-indigo-500 to-purple-500'
     }
   ];
 
@@ -63,31 +69,34 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#E8F4FD] font-['Manrope']">
+    <div className="min-h-screen font-['Manrope'] relative">
+      {/* Background Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-transparent z-0"></div>
+
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b border-[#dee3ed]">
+      <nav className="relative z-10 bg-white/10 backdrop-blur-md border-b border-white/20 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-[#00AEEF] rounded-lg flex items-center justify-center">
-                <Banknote className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+                <Banknote className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">LoanPro</h1>
-                <p className="text-sm text-gray-600">Management System</p>
+                <h1 className="text-2xl font-bold text-white drop-shadow-lg">LoanPro</h1>
+                <p className="text-sm text-white/90 drop-shadow">Management System</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
                 onClick={onGetStarted}
-                className="text-[#00AEEF] hover:text-[#0099CC] hover:bg-[#E8F4FD]"
+                className="text-white hover:text-cyan-300 hover:bg-white/10 backdrop-blur-sm border border-white/20"
               >
                 Login
               </Button>
               <Button
                 onClick={onGetStarted}
-                className="bg-[#00AEEF] hover:bg-[#0099CC] text-white"
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               >
                 Get Started
               </Button>
@@ -97,31 +106,38 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </nav>
 
       {/* Hero Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative z-10 py-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            <div className="mb-8">
+              <span className="inline-block px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm font-medium mb-6">
+                🚀 Transform Your Lending Business
+              </span>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 drop-shadow-2xl">
               Modern Loan Management
-              <span className="text-[#a191f5]"> Made Simple</span>
+              <span className="block bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                Made Simple
+              </span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto drop-shadow-lg leading-relaxed">
               Streamline your lending operations with our comprehensive loan management system.
               From application to repayment, manage everything in one powerful platform.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Button
                 size="lg"
                 onClick={onGetStarted}
-                className="bg-[#00AEEF] hover:bg-[#0099CC] text-white px-8 py-3 text-lg"
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-10 py-4 text-xl font-semibold shadow-2xl hover:shadow-blue-500/25 transform hover:scale-105 transition-all duration-300"
               >
                 Get Started Free
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="ml-3 w-6 h-6" />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 onClick={onGetStarted}
-                className="border-[#00AEEF] text-[#00AEEF] hover:bg-[#00AEEF] hover:text-white px-8 py-3 text-lg"
+                className="border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm px-10 py-4 text-xl font-semibold shadow-xl"
               >
                 Login to Account
               </Button>
@@ -131,28 +147,28 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section className="relative z-10 py-24 bg-white/5 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-2xl">
               Powerful Features for Modern Lending
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-white/80 max-w-3xl mx-auto drop-shadow-lg">
               Everything you need to manage loans efficiently and grow your lending business
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="border border-[#dee3ed] hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="w-12 h-12 bg-[#00AEEF] rounded-lg flex items-center justify-center mb-4">
-                    <feature.icon className="w-6 h-6 text-white" />
+              <Card key={index} className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 transform hover:scale-105">
+                <CardContent className="p-8">
+                  <div className={`w-16 h-16 bg-gradient-to-r ${feature.color} rounded-2xl flex items-center justify-center mb-6 shadow-lg`}>
+                    <feature.icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-white/90 leading-relaxed drop-shadow">
                     {feature.description}
                   </p>
                 </CardContent>
@@ -163,37 +179,39 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 bg-[#f5f8ff]">
+      <section className="relative z-10 py-24 bg-gradient-to-r from-blue-900/20 to-purple-900/20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 drop-shadow-2xl">
                 Why Choose LoanPro?
               </h2>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-xl text-white/90 mb-10 drop-shadow-lg leading-relaxed">
                 Join thousands of financial institutions using our platform to streamline their lending operations and improve customer satisfaction.
               </p>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <CheckCircle className="w-5 h-5 text-[#a191f5] flex-shrink-0" />
-                    <span className="text-gray-700">{benefit}</span>
+                  <div key={index} className="flex items-center gap-4">
+                    <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg">
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-white text-lg drop-shadow">{benefit}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-white rounded-lg p-8 shadow-lg border border-[#dee3ed]">
-              <div className="text-center mb-6">
-                <div className="flex justify-center mb-4">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-10 shadow-2xl border border-white/20">
+              <div className="text-center">
+                <div className="flex justify-center mb-6">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                    <Star key={i} className="w-6 h-6 text-yellow-400 fill-current drop-shadow-lg" />
                   ))}
                 </div>
-                <p className="text-gray-600 italic mb-4">
+                <p className="text-white/90 italic text-lg mb-6 leading-relaxed drop-shadow">
                   "LoanPro has transformed our lending operations. The automation features have saved us countless hours and improved our customer experience significantly."
                 </p>
-                <div className="text-sm text-gray-500">
+                <div className="text-white/70 font-medium drop-shadow">
                   - Sarah Johnson, Operations Manager
                 </div>
               </div>
@@ -203,65 +221,71 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-[#00AEEF]">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+      <section className="relative z-10 py-24 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <div className="mb-8">
+            <span className="inline-block px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full text-white text-lg font-medium mb-6">
+              ✨ Start Your Journey Today
+            </span>
+          </div>
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 drop-shadow-2xl">
             Ready to Transform Your Lending Business?
           </h2>
-          <p className="text-xl text-white/90 mb-8">
-            Join LoanPro today and experience the future of client management
+          <p className="text-xl md:text-2xl text-white/90 mb-12 drop-shadow-lg max-w-3xl mx-auto leading-relaxed">
+            Join LoanPro today and experience the future of client management with our cutting-edge platform
           </p>
           <Button
             size="lg"
             onClick={onGetStarted}
-            className="bg-white text-[#00AEEF] hover:bg-gray-50 px-8 py-3 text-lg font-semibold"
+            className="bg-white text-blue-600 hover:bg-gray-50 px-12 py-5 text-xl font-bold shadow-2xl hover:shadow-white/25 transform hover:scale-110 transition-all duration-300"
           >
             Start Your Free Trial
-            <ArrowRight className="ml-2 w-5 h-5" />
+            <ArrowRight className="ml-3 w-6 h-6" />
           </Button>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="relative z-10 bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-[#00AEEF] rounded-lg flex items-center justify-center">
-                  <Banknote className="w-6 h-6 text-white" />
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-14 h-14 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <Banknote className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">LoanPro</h3>
-                  <p className="text-gray-400">Management System</p>
+                  <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">LoanPro</h3>
+                  <p className="text-white/70">Management System</p>
                 </div>
               </div>
-              <p className="text-gray-400 mb-4">
+              <p className="text-white/80 mb-6 text-lg leading-relaxed">
                 Modern loan management platform designed for financial institutions and lenders.
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Features</a></li>
-                <li><a href="#" className="hover:text-white">Pricing</a></li>
-                <li><a href="#" className="hover:text-white">Security</a></li>
+              <h4 className="font-bold text-xl mb-6 text-white">Product</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-white/70 hover:text-cyan-400 transition-colors text-lg">Features</a></li>
+                <li><a href="#" className="text-white/70 hover:text-cyan-400 transition-colors text-lg">Pricing</a></li>
+                <li><a href="#" className="text-white/70 hover:text-cyan-400 transition-colors text-lg">Security</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Documentation</a></li>
-                <li><a href="#" className="hover:text-white">Contact</a></li>
-                <li><a href="#" className="hover:text-white">Help Center</a></li>
+              <h4 className="font-bold text-xl mb-6 text-white">Support</h4>
+              <ul className="space-y-3">
+                <li><a href="#" className="text-white/70 hover:text-cyan-400 transition-colors text-lg">Documentation</a></li>
+                <li><a href="#" className="text-white/70 hover:text-cyan-400 transition-colors text-lg">Contact</a></li>
+                <li><a href="#" className="text-white/70 hover:text-cyan-400 transition-colors text-lg">Help Center</a></li>
               </ul>
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 LoanPro. All rights reserved.</p>
+          <div className="border-t border-white/20 mt-12 pt-8 text-center">
+            <p className="text-white/60 text-lg">&copy; 2024 LoanPro. All rights reserved.</p>
           </div>
         </div>
       </footer>
