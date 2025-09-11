@@ -402,11 +402,6 @@
 
   body {
     background-color: var(--background);
-    background-image: url('https://as1.ftcdn.net/jpg/02/41/19/00/1000_F_241190020_7RCHNWrWheP5cVQ5b0ncESbyTctc7Fo5.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     color: var(--foreground);
   }
 

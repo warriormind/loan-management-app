@@ -70,11 +70,9 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
 
   return (
     <div className="min-h-screen font-['Manrope'] relative overflow-x-hidden">
-      {/* Background Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/20 to-transparent z-0"></div>
 
       {/* Navigation */}
-      <nav className="relative z-10 bg-white/10 backdrop-blur-md border-b border-white/20 shadow-lg">
+      <nav className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center gap-3">
@@ -82,15 +80,15 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 <Banknote className="w-7 h-7 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white drop-shadow-lg">LoanPro</h1>
-                <p className="text-sm text-white/90 drop-shadow">Management System</p>
+                <h1 className="text-2xl font-bold text-gray-900">LoanPro</h1>
+                <p className="text-sm text-gray-600">Management System</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
                 onClick={onGetStarted}
-                className="text-white hover:text-cyan-300 hover:bg-white/10 backdrop-blur-sm border border-white/20"
+                className="text-gray-700 hover:text-blue-600 hover:bg-blue-50"
               >
                 Login
               </Button>
@@ -106,21 +104,21 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative z-10 py-20 sm:py-32 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 sm:py-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <div className="mb-6 sm:mb-8">
-              <span className="inline-block px-3 sm:px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+              <span className="inline-block px-3 sm:px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
                 🚀 Transform Your Lending Business
               </span>
             </div>
-            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 sm:mb-8 drop-shadow-2xl leading-tight">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 sm:mb-8 leading-tight">
               Modern Loan Management
-              <span className="block bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                 Made Simple
               </span>
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 sm:mb-12 max-w-4xl mx-auto drop-shadow-lg leading-relaxed px-2">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-700 mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-2">
               Streamline your lending operations with our comprehensive loan management system.
               From application to repayment, manage everything in one powerful platform.
             </p>
@@ -137,7 +135,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 size="lg"
                 variant="outline"
                 onClick={onGetStarted}
-                className="border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm px-6 sm:px-10 py-3 sm:py-4 text-lg sm:text-xl font-semibold shadow-xl w-full sm:w-auto"
+                className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 px-6 sm:px-10 py-3 sm:py-4 text-lg sm:text-xl font-semibold shadow-xl w-full sm:w-auto"
               >
                 Login to Account
               </Button>
@@ -147,28 +145,28 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Features Section */}
-      <section className="relative z-10 py-16 sm:py-24 bg-white/5 backdrop-blur-sm">
+      <section className="py-16 sm:py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-20">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6 drop-shadow-2xl">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
               Powerful Features for Modern Lending
             </h2>
-            <p className="text-lg sm:text-xl text-white/80 max-w-3xl mx-auto drop-shadow-lg px-2">
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-2">
               Everything you need to manage loans efficiently and grow your lending business
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 transform hover:scale-105">
+              <Card key={index} className="bg-white border border-gray-200 hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                 <CardContent className="p-6 sm:p-8">
                   <div className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r ${feature.color} rounded-2xl flex items-center justify-center mb-4 sm:mb-6 shadow-lg`}>
                     <feature.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 drop-shadow-lg">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
                     {feature.title}
                   </h3>
-                  <p className="text-white/90 leading-relaxed drop-shadow text-sm sm:text-base">
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
                     {feature.description}
                   </p>
                 </CardContent>
@@ -179,14 +177,14 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Benefits Section */}
-      <section className="relative z-10 py-16 sm:py-24 bg-gradient-to-r from-blue-900/20 to-purple-900/20 backdrop-blur-sm">
+      <section className="py-16 sm:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center">
             <div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6 sm:mb-8 drop-shadow-2xl">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6 sm:mb-8">
                 Why Choose LoanPro?
               </h2>
-              <p className="text-lg sm:text-xl text-white/90 mb-6 sm:mb-10 drop-shadow-lg leading-relaxed">
+              <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-10 leading-relaxed">
                 Join thousands of financial institutions using our platform to streamline their lending operations and improve customer satisfaction.
               </p>
               <div className="space-y-4 sm:space-y-6">
@@ -195,23 +193,23 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                     <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
                       <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                     </div>
-                    <span className="text-white text-base sm:text-lg drop-shadow">{benefit}</span>
+                    <span className="text-gray-700 text-base sm:text-lg">{benefit}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-10 shadow-2xl border border-white/20">
+            <div className="bg-gray-50 rounded-2xl p-6 sm:p-10 shadow-lg border border-gray-200">
               <div className="text-center">
                 <div className="flex justify-center mb-4 sm:mb-6">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 fill-current drop-shadow-lg" />
+                    <Star key={i} className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-white/90 italic text-base sm:text-lg mb-4 sm:mb-6 leading-relaxed drop-shadow">
+                <p className="text-gray-700 italic text-base sm:text-lg mb-4 sm:mb-6 leading-relaxed">
                   "LoanPro has transformed our lending operations. The automation features have saved us countless hours and improved our customer experience significantly."
                 </p>
-                <div className="text-white/70 font-medium drop-shadow text-sm sm:text-base">
+                <div className="text-gray-500 font-medium text-sm sm:text-base">
                   - Sarah Johnson, Operations Manager
                 </div>
               </div>
@@ -221,9 +219,8 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="relative z-10 py-16 sm:py-24 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+      <section className="py-16 sm:py-24 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-700">
+        <div className="max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <div className="mb-6 sm:mb-8">
             <span className="inline-block px-4 sm:px-6 py-2 sm:py-3 bg-white/20 backdrop-blur-sm rounded-full text-white text-base sm:text-lg font-medium mb-4 sm:mb-6">
               ✨ Start Your Journey Today
@@ -247,7 +244,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 text-white py-12 sm:py-16">
+      <footer className="bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 text-white py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
             <div className="col-span-1 sm:col-span-2 lg:col-span-2">
