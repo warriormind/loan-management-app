@@ -51,6 +51,7 @@ import { StaffRolesTab } from './components/StaffRolesTab';
 import { CalendarTab } from './components/CalendarTab';
 import { PortfolioDetails } from './components/PortfolioDetails';
 import { ServiceDetails } from './components/ServiceDetails';
+import { StarterPage } from './components/StarterPage';
 
 // Import signup flow components
 import { SignupForm } from './components/SignupForm';
@@ -73,6 +74,7 @@ const adminNavigationItems = [
   { id: 'risk', label: 'Credit & Risk', icon: Shield, component: CreditRiskModule },
   { id: 'services', label: 'Service Details', icon: Settings, component: ServiceDetails },
   { id: 'portfolio', label: 'Portfolio', icon: FileText, component: PortfolioDetails },
+  { id: 'starter', label: 'Starter Page', icon: Home, component: StarterPage },
   { id: 'settings', label: 'Account Settings', icon: Settings, component: SettingsTab },
   { id: 'branches', label: 'Branches', icon: Building, component: BranchesTab },
   { id: 'staff', label: 'Staff & Roles', icon: UserCheck, component: StaffRolesTab },
