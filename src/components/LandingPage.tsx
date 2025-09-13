@@ -24,6 +24,21 @@ interface LandingPageProps {
 }
 
 export function LandingPage({ onGetStarted }: LandingPageProps) {
+  // Add scroll effect to header
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const header = document.querySelector('#header');
+      if (header && window.scrollY > 100) {
+        document.body.classList.add('scrolled');
+      } else {
+        document.body.classList.remove('scrolled');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const services = [
     {
       icon: Banknote,
