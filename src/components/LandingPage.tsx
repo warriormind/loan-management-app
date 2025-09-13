@@ -66,7 +66,7 @@ function useCountUp(end: number, duration: number = 2000, start: number = 0) {
   return { count, startAnimation };
 }
 
-export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
+export function LandingPage({ onGetStarted, onLogin }: { onGetStarted: () => void; onLogin: () => void }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [particles, setParticles] = useState<Array<{id: number, x: number, y: number, size: number, speed: number}>>([]);
@@ -143,6 +143,13 @@ export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
 
             <div className="flex items-center space-x-4">
               <Button
+                onClick={onLogin}
+                variant="outline"
+                className="hidden sm:flex border-2 border-accent-color text-accent-color hover:bg-accent-color hover:text-contrast-color transition-all duration-300"
+              >
+                Login
+              </Button>
+              <Button
                 onClick={onGetStarted}
                 className="hidden sm:flex bg-gradient-to-r from-accent-color to-primary text-contrast-color border-none shadow-lg hover:shadow-xl transition-all duration-300"
               >
@@ -169,13 +176,22 @@ export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
                 <button onClick={() => scrollToSection('services')} className="block w-full text-left text-default-color hover:text-accent-color transition-colors font-medium py-2">Services</button>
                 <button onClick={() => scrollToSection('testimonials')} className="block w-full text-left text-default-color hover:text-accent-color transition-colors font-medium py-2">Testimonials</button>
                 <button onClick={() => scrollToSection('contact')} className="block w-full text-left text-default-color hover:text-accent-color transition-colors font-medium py-2">Contact</button>
-                <Button
-                  onClick={onGetStarted}
-                  className="w-full bg-gradient-to-r from-accent-color to-primary text-contrast-color border-none shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  Get Started
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
+                <div className="space-y-3 pt-2">
+                  <Button
+                    onClick={onLogin}
+                    variant="outline"
+                    className="w-full border-2 border-accent-color text-accent-color hover:bg-accent-color hover:text-contrast-color transition-all duration-300"
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    onClick={onGetStarted}
+                    className="w-full bg-gradient-to-r from-accent-color to-primary text-contrast-color border-none shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    Get Started
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </div>
               </div>
             </div>
           )}
@@ -229,6 +245,14 @@ export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <Button
+                  onClick={onLogin}
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-accent-color text-accent-color hover:bg-accent-color hover:text-contrast-color px-8 py-4 text-lg transition-all duration-300"
+                >
+                  Login to Dashboard
+                </Button>
                 <Button
                   onClick={onGetStarted}
                   size="lg"
@@ -656,6 +680,14 @@ export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
             Join thousands of financial institutions already using LoanPro to streamline their operations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              onClick={onLogin}
+              variant="outline"
+              size="lg"
+              className="border-2 border-contrast-color text-contrast-color hover:bg-contrast-color hover:text-accent-color px-8 py-4 text-lg transition-all duration-300"
+            >
+              Login to Account
+            </Button>
             <Button
               onClick={onGetStarted}
               size="lg"

@@ -119,6 +119,10 @@ export default function App() {
     setCurrentView('signup');
   };
 
+  const handleGoToLogin = () => {
+    setCurrentView('login');
+  };
+
   const handleSignupComplete = (userData: any) => {
     setSignupData(userData);
     setCurrentView('kyc');
@@ -153,7 +157,7 @@ export default function App() {
 
   // Show landing page first
   if (!isAuthenticated && currentView === 'landing') {
-    return <LandingPage onGetStarted={handleGetStarted} />;
+    return <LandingPage onGetStarted={handleGetStarted} onLogin={handleGoToLogin} />;
   }
 
   // Show login page if not authenticated
