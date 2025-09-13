@@ -24,6 +24,7 @@ import {
 interface SignupFormProps {
   onComplete: (userData: any) => void;
   onBack: () => void;
+  initialData?: Partial<UserData>;
 }
 
 interface UserData {
@@ -52,27 +53,27 @@ interface UserData {
   employer: string;
 }
 
-export function SignupForm({ onComplete, onBack }: SignupFormProps) {
+export function SignupForm({ onComplete, onBack, initialData }: SignupFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [userData, setUserData] = useState<UserData>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    dateOfBirth: '',
-    gender: '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    country: '',
-    password: '',
-    confirmPassword: '',
-    employmentStatus: '',
-    monthlyIncome: '',
-    employer: ''
+    firstName: initialData?.firstName || '',
+    lastName: initialData?.lastName || '',
+    email: initialData?.email || '',
+    phone: initialData?.phone || '',
+    dateOfBirth: initialData?.dateOfBirth || '',
+    gender: initialData?.gender || '',
+    address: initialData?.address || '',
+    city: initialData?.city || '',
+    state: initialData?.state || '',
+    zipCode: initialData?.zipCode || '',
+    country: initialData?.country || '',
+    password: initialData?.password || '',
+    confirmPassword: initialData?.confirmPassword || '',
+    employmentStatus: initialData?.employmentStatus || '',
+    monthlyIncome: initialData?.monthlyIncome || '',
+    employer: initialData?.employer || ''
   });
 
   const [errors, setErrors] = useState<Partial<UserData>>({});

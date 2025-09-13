@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 
 // Import components
+import { LandingPage } from './components/LandingPage';
 import { LoginPage } from './components/LoginPage';
 import { BorrowerDashboard } from './components/BorrowerDashboard';
 import { KYCVerification } from './components/KYCVerification';
@@ -96,7 +97,7 @@ export default function App() {
   const [userEmail, setUserEmail] = useState('');
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<'login' | 'signup' | 'kyc' | 'success' | 'tutorial'>('login');
+  const [currentView, setCurrentView] = useState<'landing' | 'login' | 'signup' | 'kyc' | 'success' | 'tutorial'>('landing');
   const [signupData, setSignupData] = useState<any>(null);
   const [showTutorial, setShowTutorial] = useState(false);
 
@@ -114,7 +115,28 @@ export default function App() {
     setActiveTab('dashboard');
   };
 
-  const handleGetStarted = () => {
+  const handleGetStarted = (landingData?: any) => {
+    if (landingData) {
+      // Pre-populate signup form with landing page data
+      setSignupData({
+        firstName: landingData.firstName || '',
+        lastName: landingData.lastName || '',
+        email: landingData.email || '',
+        phone: landingData.phone || '',
+        dateOfBirth: landingData.dateOfBirth || '',
+        password: landingData.password || '',
+        confirmPassword: landingData.confirmPassword || '',
+        // Add default values for other required fields
+        gender: '',
+        address: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        country: '',
+        employmentStatus: '',
+        monthlyIncome: ''
+      });
+    }
     setCurrentView('signup');
   };
 
@@ -150,6 +172,19 @@ export default function App() {
     setCurrentView('login');
   };
 
+  const handleGoToLogin = () => {
+    setCurrentView('login');
+  };
+
+  const handleLandingSignup = () => {
+    setCurrentView('signup');
+  };
+
+  // Show landing page first
+  if (!isAuthenticated && currentView === 'landing') {
+    return <LandingPage onGetStarted={handleLandingSignup} onLogin={handleGoToLogin} />;
+  }
+
   // Show login page if not authenticated
   if (!isAuthenticated && currentView === 'login') {
     return <LoginPage onLogin={handleLogin} />;
@@ -157,7 +192,7 @@ export default function App() {
 
   // Show signup form
   if (!isAuthenticated && currentView === 'signup') {
-    return <SignupForm onComplete={handleSignupComplete} onBack={handleBackToLogin} />;
+    return <SignupForm onComplete={handleSignupComplete} onBack={handleBackToLogin} initialData={signupData} />;
   }
 
   // Show KYC verification
