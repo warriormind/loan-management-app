@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, ChangeEvent, KeyboardEvent, MouseEvent } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -145,7 +145,7 @@ export function ClientChatbot() {
     return (
       <div className="fixed bottom-6 right-6 z-50">
         <Button
-          onClick={() => setIsOpen(true)}
+          onClick={(e: MouseEvent<HTMLButtonElement>) => setIsOpen(true)}
           className="w-14 h-14 rounded-full bg-[#00AEEF] hover:bg-[#0099CC] shadow-lg"
         >
           <MessageCircle className="w-6 h-6" />
@@ -169,7 +169,7 @@ export function ClientChatbot() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setIsMinimized(!isMinimized)}
+              onClick={(e: MouseEvent<HTMLButtonElement>) => setIsMinimized(!isMinimized)}
               className="text-white hover:bg-white/20 h-8 w-8 p-0 transition-all duration-200 hover-scale"
             >
               {isMinimized ? <Maximize2 className="w-4 h-4 transition-transform hover:rotate-180" /> : <Minimize2 className="w-4 h-4 transition-transform hover:-rotate-180" />}
@@ -177,7 +177,7 @@ export function ClientChatbot() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setIsOpen(false)}
+              onClick={(e: MouseEvent<HTMLButtonElement>) => setIsOpen(false)}
               className="text-white hover:bg-white/20 h-8 w-8 p-0 transition-all duration-200 hover-scale"
             >
               <X className="w-4 h-4 transition-transform hover:rotate-90" />
@@ -215,7 +215,7 @@ export function ClientChatbot() {
                                 key={index}
                                 variant="outline"
                                 size="sm"
-                                onClick={() => handleQuickReply(suggestion)}
+                                onClick={(e: MouseEvent<HTMLButtonElement>) => handleQuickReply(suggestion)}
                                 className={`text-xs h-6 px-2 transition-all duration-200 hover-scale btn-interactive ${
                                   message.type === 'user'
                                     ? 'bg-white/20 border-white/30 text-white hover:bg-white/30'
@@ -254,13 +254,13 @@ export function ClientChatbot() {
               <div className="flex gap-2">
                 <Input
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(inputValue)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
+                  onKeyPress={(e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleSendMessage(inputValue)}
                   placeholder="Type your message..."
                   className="flex-1"
                 />
                 <Button
-                  onClick={() => handleSendMessage(inputValue)}
+                  onClick={(e: MouseEvent<HTMLButtonElement>) => handleSendMessage(inputValue)}
                   disabled={!inputValue.trim() || isTyping}
                   className="bg-[#00AEEF] hover:bg-[#0099CC]"
                 >

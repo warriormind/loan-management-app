@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent, MouseEvent } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -9,7 +9,7 @@ import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import { Skeleton, TableSkeleton, CardSkeleton } from './ui/skeleton';
-import { Search, Plus, Eye, Edit, Trash2 } from 'lucide-react';
+import { Search, Plus, Eye, Edit, Trash2, TrendingUp, TrendingDown } from 'lucide-react';
 
 const mockBorrowers = [
   {
@@ -58,20 +58,72 @@ const mockBorrowers = [
   }
 ];
 
+// Custom hook for counting animation
+function useCountUp(end: number, duration: number = 2000, start: number = 0) {
+  const [count, setCount] = useState(start);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (isAnimating) {
+      const startTime = Date.now();
+      const startValue = start;
+
+      const animate = () => {
+        const now = Date.now();
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Easing function for smooth animation
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentValue = Math.floor(startValue + (end - startValue) * easeOutQuart);
+
+        setCount(currentValue);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+
+      requestAnimationFrame(animate);
+    }
+  }, [end, duration, start, isAnimating]);
+
+  const startAnimation = () => setIsAnimating(true);
+
+  return { count, startAnimation };
+}
+
 export function BorrowersTab() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
 
+  // Animated counters for stats
+  const totalClients = useCountUp(1247, 2000);
+  const activeClients = useCountUp(1089, 2000);
+  const defaultedClients = useCountUp(158, 2000);
+  const avgCreditScore = useCountUp(684, 2000);
+
   useEffect(() => {
     // Simulate loading data
     const timer = setTimeout(() => {
       setIsLoading(false);
+      // Start animations after loading
+      setTimeout(() => {
+        totalClients.startAnimation();
+        setTimeout(() => activeClients.startAnimation(), 200);
+        setTimeout(() => defaultedClients.startAnimation(), 400);
+        setTimeout(() => avgCreditScore.startAnimation(), 600);
+      }, 300);
     }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
   const filteredClients = mockBorrowers.filter(client =>
     client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -94,17 +146,41 @@ export function BorrowersTab() {
     return 'text-red-600';
   };
 
-  const handleActionSuccess = () => {
+  const handleActionSuccess = (action: string) => {
     setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 2000);
+    setTimeout(() => setShowSuccess(false), 3000);
+  };
+
+  const handleActionClick = (action: string, clientId: string, event?: MouseEvent<HTMLButtonElement>) => {
+    // Simulate action processing
+    console.log(`${action} action for client ${clientId}`);
+
+    // Show loading feedback
+    const button = event?.currentTarget as HTMLElement;
+    if (button) {
+      button.style.pointerEvents = 'none';
+      button.style.opacity = '0.6';
+      setTimeout(() => {
+        button.style.pointerEvents = 'auto';
+        button.style.opacity = '1';
+        handleActionSuccess(action);
+      }, 1000);
+    }
   };
 
   return (
     <TooltipProvider>
       <div className="space-y-6 relative">
         {showSuccess && (
-          <div className="fixed top-4 right-4 z-50 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg fade-in">
-            Action completed successfully!
+          <div className="fixed top-4 right-4 z-50 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-xl shadow-2xl fade-in border border-green-400/20 animate-bounce">
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center">
+                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <span className="font-medium">Action completed successfully!</span>
+            </div>
           </div>
         )}
         {/* Stats Cards */}
@@ -118,60 +194,80 @@ export function BorrowersTab() {
             </>
           ) : (
             <>
-              <Card className="card-interactive hover-lift bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card className="card-interactive hover-lift bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20 shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-default-color/70 font-medium mb-2">Total Clients</p>
-                      <p className="text-3xl font-bold text-heading-color">1,247</p>
-                      <p className="text-xs text-accent-color mt-1">+12% from last month</p>
+                      <p className="text-3xl font-bold text-heading-color transition-all duration-300 group-hover:scale-105">
+                        {totalClients.count.toLocaleString()}
+                      </p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <TrendingUp className="w-3 h-3 text-green-500" />
+                        <p className="text-xs text-green-500">+12% from last month</p>
+                      </div>
                     </div>
-                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center hover-scale shadow-lg">
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center hover-scale shadow-lg group-hover:rotate-12 transition-transform duration-300">
                       <Search className="w-8 h-8 text-contrast-color" />
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="card-interactive hover-lift bg-gradient-to-br from-green-500/10 to-emerald-500/5 border-green-500/20 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card className="card-interactive hover-lift bg-gradient-to-br from-green-500/10 to-emerald-500/5 border-green-500/20 shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-default-color/70 font-medium mb-2">Active Clients</p>
-                      <p className="text-3xl font-bold text-heading-color">1,089</p>
-                      <p className="text-xs text-green-500 mt-1">87.2% active rate</p>
+                      <p className="text-3xl font-bold text-heading-color transition-all duration-300 group-hover:scale-105">
+                        {activeClients.count.toLocaleString()}
+                      </p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <p className="text-xs text-green-500">87.2% active rate</p>
+                      </div>
                     </div>
-                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center hover-scale shadow-lg">
+                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center hover-scale shadow-lg group-hover:rotate-12 transition-transform duration-300">
                       <div className="w-4 h-4 bg-green-400 rounded-full pulse shadow-lg"></div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="card-interactive hover-lift bg-gradient-to-br from-red-500/10 to-red-600/5 border-red-500/20 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card className="card-interactive hover-lift bg-gradient-to-br from-red-500/10 to-red-600/5 border-red-500/20 shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-default-color/70 font-medium mb-2">Defaulted</p>
-                      <p className="text-3xl font-bold text-heading-color">158</p>
-                      <p className="text-xs text-red-500 mt-1">12.7% default rate</p>
+                      <p className="text-3xl font-bold text-heading-color transition-all duration-300 group-hover:scale-105">
+                        {defaultedClients.count.toLocaleString()}
+                      </p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <TrendingDown className="w-3 h-3 text-red-500" />
+                        <p className="text-xs text-red-500">12.7% default rate</p>
+                      </div>
                     </div>
-                    <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center hover-scale shadow-lg">
+                    <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center hover-scale shadow-lg group-hover:rotate-12 transition-transform duration-300">
                       <div className="w-4 h-4 bg-red-400 rounded-full pulse shadow-lg"></div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="card-interactive hover-lift bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20 shadow-lg hover:shadow-xl transition-all duration-300">
+              <Card className="card-interactive hover-lift bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20 shadow-lg hover:shadow-xl transition-all duration-300 group">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm text-default-color/70 font-medium mb-2">Avg Credit Score</p>
-                      <p className="text-3xl font-bold text-heading-color">684</p>
-                      <p className="text-xs text-purple-500 mt-1">+5.2 points improvement</p>
+                      <p className="text-3xl font-bold text-heading-color transition-all duration-300 group-hover:scale-105">
+                        {avgCreditScore.count}
+                      </p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <TrendingUp className="w-3 h-3 text-purple-500" />
+                        <p className="text-xs text-purple-500">+5.2 points improvement</p>
+                      </div>
                     </div>
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center hover-scale shadow-lg">
+                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center hover-scale shadow-lg group-hover:rotate-12 transition-transform duration-300">
                       <div className="w-8 h-8 bg-purple-400 rounded-xl shadow-lg"></div>
                     </div>
                   </div>
@@ -195,7 +291,7 @@ export function BorrowersTab() {
                 <Input
                   placeholder="Search clients..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={handleSearchChange}
                   className="pl-12 h-12 bg-background border-default-color/20 rounded-xl focus:border-accent-color focus:ring-accent-color/20 transition-all duration-300"
                 />
               </div>
@@ -258,7 +354,7 @@ export function BorrowersTab() {
                     </Button>
                     <Button onClick={() => {
                       setIsAddDialogOpen(false);
-                      handleActionSuccess();
+                      handleActionSuccess('Add Client');
                     }}>
                       Add Client
                     </Button>
@@ -319,8 +415,13 @@ export function BorrowersTab() {
                         <div className="flex items-center gap-3">
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button variant="ghost" size="sm" className="hover-scale transition-all duration-300 p-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600">
-                                <Eye className="w-5 h-5" />
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="hover-scale transition-all duration-300 p-2 rounded-lg hover:bg-blue-500/10 hover:text-blue-600 btn-interactive"
+                                onClick={(e) => handleActionClick('View', client.id, e)}
+                              >
+                                <Eye className="w-5 h-5 transition-transform hover:scale-110" />
                               </Button>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -329,8 +430,13 @@ export function BorrowersTab() {
                           </Tooltip>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button variant="ghost" size="sm" className="hover-scale transition-all duration-300 p-2 rounded-lg hover:bg-green-500/10 hover:text-green-600">
-                                <Edit className="w-5 h-5" />
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="hover-scale transition-all duration-300 p-2 rounded-lg hover:bg-green-500/10 hover:text-green-600 btn-interactive"
+                                onClick={(e) => handleActionClick('Edit', client.id, e)}
+                              >
+                                <Edit className="w-5 h-5 transition-transform hover:scale-110" />
                               </Button>
                             </TooltipTrigger>
                             <TooltipContent>
@@ -339,8 +445,13 @@ export function BorrowersTab() {
                           </Tooltip>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button variant="ghost" size="sm" className="hover-lift transition-all duration-300 p-2 rounded-lg hover:bg-red-500/10 hover:text-red-600">
-                                <Trash2 className="w-5 h-5" />
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="hover-lift transition-all duration-300 p-2 rounded-lg hover:bg-red-500/10 hover:text-red-600 btn-interactive"
+                                onClick={(e) => handleActionClick('Delete', client.id, e)}
+                              >
+                                <Trash2 className="w-5 h-5 transition-transform hover:scale-110" />
                               </Button>
                             </TooltipTrigger>
                             <TooltipContent>
