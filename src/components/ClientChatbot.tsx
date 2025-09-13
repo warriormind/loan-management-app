@@ -159,10 +159,10 @@ export function ClientChatbot() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      <Card className={`w-96 ${isMinimized ? 'h-14' : 'h-[600px]'} shadow-2xl border-2 border-[#00AEEF]/20`}>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-[#00AEEF] text-white rounded-t-lg">
+      <Card className={`w-96 ${isMinimized ? 'h-14' : 'h-[600px]'} shadow-2xl border-2 border-[#00AEEF]/20 transition-all duration-300 ease-in-out ${isOpen ? 'bounce-in' : 'opacity-0 scale-95'}`}>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-[#00AEEF] text-white rounded-t-lg hover-lift">
           <CardTitle className="text-lg flex items-center gap-2">
-            <Bot className="w-5 h-5" />
+            <Bot className="w-5 h-5 transition-transform hover:rotate-12" />
             Loan Assistant
           </CardTitle>
           <div className="flex items-center gap-1">
@@ -170,17 +170,17 @@ export function ClientChatbot() {
               variant="ghost"
               size="sm"
               onClick={() => setIsMinimized(!isMinimized)}
-              className="text-white hover:bg-white/20 h-8 w-8 p-0"
+              className="text-white hover:bg-white/20 h-8 w-8 p-0 transition-all duration-200 hover-scale"
             >
-              {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
+              {isMinimized ? <Maximize2 className="w-4 h-4 transition-transform hover:rotate-180" /> : <Minimize2 className="w-4 h-4 transition-transform hover:-rotate-180" />}
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setIsOpen(false)}
-              className="text-white hover:bg-white/20 h-8 w-8 p-0"
+              className="text-white hover:bg-white/20 h-8 w-8 p-0 transition-all duration-200 hover-scale"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4 transition-transform hover:rotate-90" />
             </Button>
           </div>
         </CardHeader>
@@ -190,18 +190,18 @@ export function ClientChatbot() {
             <CardContent className="flex-1 p-0">
               <ScrollArea className="h-80 p-4">
                 <div className="space-y-4">
-                  {messages.map((message) => (
-                    <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`max-w-[80%] rounded-lg p-3 ${
+                  {messages.map((message, index) => (
+                    <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} fade-in`} style={{ animationDelay: `${index * 0.1}s` }}>
+                      <div className={`max-w-[80%] rounded-lg p-3 transition-all duration-300 hover-lift ${
                         message.type === 'user'
-                          ? 'bg-[#00AEEF] text-white'
-                          : 'bg-gray-100 text-gray-900'
+                          ? 'bg-[#00AEEF] text-white hover:shadow-lg'
+                          : 'bg-gray-100 text-gray-900 hover:shadow-md'
                       }`}>
                         <div className="flex items-center gap-2 mb-1">
                           {message.type === 'user' ? (
-                            <User className="w-4 h-4" />
+                            <User className="w-4 h-4 transition-transform hover:scale-110" />
                           ) : (
-                            <Bot className="w-4 h-4" />
+                            <Bot className="w-4 h-4 transition-transform hover:scale-110" />
                           )}
                           <span className="text-xs opacity-70">
                             {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -216,7 +216,11 @@ export function ClientChatbot() {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleQuickReply(suggestion)}
-                                className="text-xs h-6 px-2 bg-white/20 border-white/30 text-white hover:bg-white/30"
+                                className={`text-xs h-6 px-2 transition-all duration-200 hover-scale btn-interactive ${
+                                  message.type === 'user'
+                                    ? 'bg-white/20 border-white/30 text-white hover:bg-white/30'
+                                    : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                                }`}
                               >
                                 {suggestion}
                               </Button>

@@ -50,6 +50,12 @@ import { BranchesTab } from './components/BranchesTab';
 import { StaffRolesTab } from './components/StaffRolesTab';
 import { CalendarTab } from './components/CalendarTab';
 
+// Import signup flow components
+import { SignupForm } from './components/SignupForm';
+import { SignupKYC } from './components/SignupKYC';
+import { SignupSuccess } from './components/SignupSuccess';
+import { OnboardingTutorial } from './components/OnboardingTutorial';
+
 // Admin navigation items
 const adminNavigationItems = [
   { id: 'clients', label: 'Clients', icon: Users, component: BorrowersTab },
@@ -85,7 +91,9 @@ export default function App() {
   const [userEmail, setUserEmail] = useState('');
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<'landing' | 'login'>('landing');
+  const [currentView, setCurrentView] = useState<'landing' | 'login' | 'signup' | 'kyc' | 'success' | 'tutorial'>('landing');
+  const [signupData, setSignupData] = useState<any>(null);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   const handleLogin = (role: 'admin' | 'client', email: string) => {
     setIsAuthenticated(true);
@@ -102,7 +110,39 @@ export default function App() {
   };
 
   const handleGetStarted = () => {
-    setCurrentView('login');
+    setCurrentView('signup');
+  };
+
+  const handleSignupComplete = (userData: any) => {
+    setSignupData(userData);
+    setCurrentView('kyc');
+  };
+
+  const handleKYCComplete = () => {
+    setCurrentView('success');
+  };
+
+  const handleStartTutorial = () => {
+    setShowTutorial(true);
+  };
+
+  const handleTutorialComplete = () => {
+    setShowTutorial(false);
+    setIsAuthenticated(true);
+    setUserRole('client');
+    setUserEmail(signupData.email);
+    setCurrentView('dashboard');
+  };
+
+  const handleGoToDashboard = () => {
+    setIsAuthenticated(true);
+    setUserRole('client');
+    setUserEmail(signupData.email);
+    setCurrentView('dashboard');
+  };
+
+  const handleBackToLanding = () => {
+    setCurrentView('landing');
   };
 
   // Show landing page first
@@ -115,16 +155,36 @@ export default function App() {
     return <LoginPage onLogin={handleLogin} />;
   }
 
+  // Show signup form
+  if (!isAuthenticated && currentView === 'signup') {
+    return <SignupForm onComplete={handleSignupComplete} onBack={handleBackToLanding} />;
+  }
+
+  // Show KYC verification
+  if (!isAuthenticated && currentView === 'kyc') {
+    return <SignupKYC userData={signupData} onComplete={handleKYCComplete} onBack={() => setCurrentView('signup')} />;
+  }
+
+  // Show success message
+  if (!isAuthenticated && currentView === 'success') {
+    return <SignupSuccess userData={signupData} onStartTutorial={handleStartTutorial} onGoToDashboard={handleGoToDashboard} />;
+  }
+
+  // Show onboarding tutorial
+  if (showTutorial) {
+    return <OnboardingTutorial onComplete={handleTutorialComplete} onSkip={handleGoToDashboard} />;
+  }
+
   const navigationItems = userRole === 'admin' ? adminNavigationItems : clientNavigationItems;
   const ActiveComponent = navigationItems.find(item => item.id === activeTab)?.component || BorrowersTab;
 
   return (
     <SidebarProvider>
       <div className="flex h-screen bg-background">
-        <Sidebar className="border-r">
-          <SidebarHeader className="border-b px-6 py-4">
+        <Sidebar className="border-r transition-all duration-300">
+          <SidebarHeader className="border-b px-6 py-4 hover-lift">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center hover-scale transition-transform">
                 <Banknote className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
@@ -133,7 +193,7 @@ export default function App() {
               </div>
             </div>
           </SidebarHeader>
-          
+
           <SidebarContent className="px-4 py-4">
             <SidebarMenu>
               {navigationItems.map((item) => (
@@ -144,9 +204,9 @@ export default function App() {
                       setIsMobileMenuOpen(false);
                     }}
                     isActive={activeTab === item.id}
-                    className="w-full justify-start gap-3 px-3 py-2"
+                    className="w-full justify-start gap-3 px-3 py-2 transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:translate-x-1 hover:shadow-sm btn-interactive"
                   >
-                    <item.icon className="w-4 h-4" />
+                    <item.icon className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
                     <span>{item.label}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -156,16 +216,16 @@ export default function App() {
         </Sidebar>
 
         <div className="flex-1 flex flex-col overflow-hidden">
-          <header className="border-b px-6 py-4 flex items-center justify-between">
+          <header className="border-b px-6 py-4 flex items-center justify-between transition-all duration-300">
             <div className="flex items-center gap-4">
-              <SidebarTrigger className="lg:hidden">
+              <SidebarTrigger className="lg:hidden hover-scale transition-transform">
                 <Menu className="w-5 h-5" />
               </SidebarTrigger>
-              <div>
-                <h2 className="text-xl font-semibold">
+              <div className="fade-in">
+                <h2 className="text-xl font-semibold transition-colors">
                   {navigationItems.find(item => item.id === activeTab)?.label}
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground transition-colors">
                   {userRole === 'admin'
                     ? `Manage your ${navigationItems.find(item => item.id === activeTab)?.label.toLowerCase()}`
                     : `Welcome back, ${userEmail.split('@')[0]}`
@@ -175,14 +235,14 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-4">
-              <Badge variant="outline" className="hidden sm:flex">
+              <Badge variant="outline" className="hidden sm:flex hover-lift transition-all">
                 {userRole === 'admin' ? 'Admin' : 'Client'}
               </Badge>
-              <Badge variant="outline" className="hidden sm:flex">
+              <Badge variant="outline" className="hidden sm:flex hover-lift transition-all pulse">
                 Live
               </Badge>
               {userRole === 'admin' && (
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" className="btn-interactive hover-lift">
                   Export
                 </Button>
               )}
@@ -190,15 +250,15 @@ export default function App() {
                 variant="outline"
                 size="sm"
                 onClick={handleLogout}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 btn-interactive hover-lift transition-all"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-4 h-4 transition-transform hover:rotate-12" />
                 Logout
               </Button>
             </div>
           </header>
 
-          <main className="flex-1 overflow-auto p-6">
+          <main className="flex-1 overflow-auto p-6 slide-in-right">
             <ActiveComponent />
           </main>
         </div>

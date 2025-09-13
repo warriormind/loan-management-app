@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -7,6 +7,8 @@ import { Badge } from './ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { Skeleton, TableSkeleton, CardSkeleton } from './ui/skeleton';
 import { Search, Plus, Eye, Edit, Trash2 } from 'lucide-react';
 
 const mockBorrowers = [
@@ -59,6 +61,17 @@ const mockBorrowers = [
 export function BorrowersTab() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    // Simulate loading data
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const filteredClients = mockBorrowers.filter(client =>
     client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -81,66 +94,88 @@ export function BorrowersTab() {
     return 'text-red-600';
   };
 
+  const handleActionSuccess = () => {
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 2000);
+  };
+
   return (
-    <div className="space-y-6">
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Clients</p>
-                <p className="text-2xl font-semibold">1,247</p>
-              </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Search className="w-6 h-6 text-blue-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Active Clients</p>
-                <p className="text-2xl font-semibold">1,089</p>
-              </div>
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <div className="w-3 h-3 bg-green-600 rounded-full"></div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Defaulted</p>
-                <p className="text-2xl font-semibold">158</p>
-              </div>
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                <div className="w-3 h-3 bg-red-600 rounded-full"></div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Avg Credit Score</p>
-                <p className="text-2xl font-semibold">684</p>
-              </div>
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <div className="w-6 h-6 bg-purple-600 rounded-lg"></div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+    <TooltipProvider>
+      <div className="space-y-6 relative">
+        {showSuccess && (
+          <div className="fixed top-4 right-4 z-50 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg fade-in">
+            Action completed successfully!
+          </div>
+        )}
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {isLoading ? (
+            <>
+              <CardSkeleton />
+              <CardSkeleton />
+              <CardSkeleton />
+              <CardSkeleton />
+            </>
+          ) : (
+            <>
+              <Card className="card-interactive hover-lift">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Total Clients</p>
+                      <p className="text-2xl font-semibold">1,247</p>
+                    </div>
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center hover-scale">
+                      <Search className="w-6 h-6 text-blue-600" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="card-interactive hover-lift">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Active Clients</p>
+                      <p className="text-2xl font-semibold">1,089</p>
+                    </div>
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center hover-scale">
+                      <div className="w-3 h-3 bg-green-600 rounded-full pulse"></div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="card-interactive hover-lift">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Defaulted</p>
+                      <p className="text-2xl font-semibold">158</p>
+                    </div>
+                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center hover-scale">
+                      <div className="w-3 h-3 bg-red-600 rounded-full pulse"></div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="card-interactive hover-lift">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Avg Credit Score</p>
+                      <p className="text-2xl font-semibold">684</p>
+                    </div>
+                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center hover-scale">
+                      <div className="w-6 h-6 bg-purple-600 rounded-lg"></div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          )}
+        </div>
 
       {/* Main Content */}
       <Card>
@@ -159,10 +194,17 @@ export function BorrowersTab() {
               </div>
               <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="flex items-center gap-2">
-                    <Plus className="w-4 h-4" />
-                    Add Client
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button className="flex items-center gap-2 btn-interactive hover-lift">
+                        <Plus className="w-4 h-4 transition-transform hover:rotate-90" />
+                        Add Client
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Add a new client to the system</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </DialogTrigger>
                 <DialogContent className="max-w-md">
                   <DialogHeader>
@@ -207,7 +249,10 @@ export function BorrowersTab() {
                     <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
                       Cancel
                     </Button>
-                    <Button onClick={() => setIsAddDialogOpen(false)}>
+                    <Button onClick={() => {
+                      setIsAddDialogOpen(false);
+                      handleActionSuccess();
+                    }}>
                       Add Client
                     </Button>
                   </div>
@@ -219,67 +264,93 @@ export function BorrowersTab() {
         
         <CardContent>
           <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Client ID</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Credit Score</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Total Loans</TableHead>
-                  <TableHead>Last Payment</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredClients.map((client) => (
-                  <TableRow key={client.id}>
-                    <TableCell className="font-medium">{client.id}</TableCell>
-                    <TableCell>
-                      <div>
-                        <div className="font-medium">{client.name}</div>
-                        <div className="text-sm text-muted-foreground">{client.address}</div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <div className="text-sm">{client.email}</div>
-                        <div className="text-sm text-muted-foreground">{client.phone}</div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className={`font-semibold ${getCreditScoreColor(client.creditScore)}`}>
-                        {client.creditScore}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(client.status)}>
-                        {client.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="font-medium">{client.totalLoans}</TableCell>
-                    <TableCell>{client.lastPayment}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm">
-                          <Eye className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
+            {isLoading ? (
+              <TableSkeleton />
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Client ID</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Contact</TableHead>
+                    <TableHead>Credit Score</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Total Loans</TableHead>
+                    <TableHead>Last Payment</TableHead>
+                    <TableHead>Actions</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filteredClients.map((client) => (
+                    <TableRow key={client.id} className="table-row-interactive cursor-pointer">
+                      <TableCell className="font-medium">{client.id}</TableCell>
+                      <TableCell>
+                        <div>
+                          <div className="font-medium">{client.name}</div>
+                          <div className="text-sm text-muted-foreground">{client.address}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <div className="text-sm">{client.email}</div>
+                          <div className="text-sm text-muted-foreground">{client.phone}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <span className={`font-semibold ${getCreditScoreColor(client.creditScore)}`}>
+                          {client.creditScore}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(client.status)}>
+                          {client.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="font-medium">{client.totalLoans}</TableCell>
+                      <TableCell>{client.lastPayment}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button variant="ghost" size="sm" className="hover-scale transition-transform">
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>View client details</p>
+                            </TooltipContent>
+                          </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button variant="ghost" size="sm" className="hover-scale transition-transform">
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Edit client information</p>
+                            </TooltipContent>
+                          </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button variant="ghost" size="sm" className="hover-lift transition-all">
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Delete client</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
           </div>
         </CardContent>
       </Card>
     </div>
+    </TooltipProvider>
   );
 }
