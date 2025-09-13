@@ -1,351 +1,281 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
 import {
-  Banknote,
-  Users,
-  CreditCard,
-  Shield,
-  PiggyBank,
-  TrendingUp,
-  FileText,
-  Calculator,
-  CheckCircle,
   ArrowRight,
-  Play,
+  Shield,
+  TrendingUp,
+  Users,
+  BarChart3,
+  CheckCircle,
   Star,
-  MapPin,
+  Play,
+  Menu,
+  X,
+  ChevronDown,
   Phone,
   Mail,
-  Clock
+  MapPin,
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin
 } from 'lucide-react';
 
-interface LandingPageProps {
-  onGetStarted: () => void;
-}
+export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-export function LandingPage({ onGetStarted }: LandingPageProps) {
-  // Add scroll effect to header
-  React.useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
-      const header = document.querySelector('#header');
-      if (header && window.scrollY > 100) {
-        document.body.classList.add('scrolled');
-      } else {
-        document.body.classList.remove('scrolled');
-      }
+      setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const services = [
-    {
-      icon: Banknote,
-      title: 'Loan Management',
-      description: 'Comprehensive loan processing, approval, and monitoring system for efficient lending operations.',
-      number: '01'
-    },
-    {
-      icon: Users,
-      title: 'Client Management',
-      description: 'Complete client profiles, KYC verification, and credit assessment tools.',
-      number: '02'
-    },
-    {
-      icon: CreditCard,
-      title: 'Repayment Tracking',
-      description: 'Automated repayment scheduling, payment processing, and delinquency management.',
-      number: '03'
-    },
-    {
-      icon: Shield,
-      title: 'Risk Assessment',
-      description: 'Advanced credit scoring, risk analysis, and collateral management features.',
-      number: '04'
-    },
-    {
-      icon: PiggyBank,
-      title: 'Savings Management',
-      description: 'Savings account management with interest calculations and withdrawal tracking.',
-      number: '05'
-    },
-    {
-      icon: TrendingUp,
-      title: 'Financial Reporting',
-      description: 'Comprehensive reports, analytics, and financial statements for informed decision making.',
-      number: '06'
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
-  ];
-
-  const testimonials = [
-    {
-      content: "LoanPro has transformed our lending operations. The automation features have saved us countless hours and improved our customer experience significantly.",
-      author: "Sarah Johnson",
-      role: "Operations Manager",
-      rating: 5
-    },
-    {
-      content: "The platform's intuitive interface and powerful analytics have helped us make better lending decisions and reduce risk exposure.",
-      author: "Michael Chen",
-      role: "Risk Manager",
-      rating: 5
-    },
-    {
-      content: "Outstanding customer support and seamless integration with our existing systems. Highly recommended for financial institutions.",
-      author: "Emma Rodriguez",
-      role: "IT Director",
-      rating: 5
-    }
-  ];
-
-  const pricingPlans = [
-    {
-      name: 'Basic',
-      price: '29',
-      period: '/month',
-      features: [
-        'Up to 100 clients',
-        'Basic loan management',
-        'Standard reporting',
-        'Email support'
-      ],
-      popular: false
-    },
-    {
-      name: 'Professional',
-      price: '79',
-      period: '/month',
-      features: [
-        'Up to 1,000 clients',
-        'Advanced loan management',
-        'Custom reporting',
-        'Priority support',
-        'API access'
-      ],
-      popular: true
-    },
-    {
-      name: 'Enterprise',
-      price: '199',
-      period: '/month',
-      features: [
-        'Unlimited clients',
-        'Full feature access',
-        'White-label solution',
-        'Dedicated support',
-        'Custom integrations'
-      ],
-      popular: false
-    }
-  ];
+    setMobileMenuOpen(false);
+  };
 
   return (
-    <div className="index-page">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header id="header" className="header d-flex align-items-center sticky-top">
-        <div className="container position-relative d-flex align-items-center justify-content-between">
-          <a href="#hero" className="logo d-flex align-items-center me-auto me-xl-0">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-glow hover-tilt mr-3">
-              <Banknote className="w-7 h-7 text-white transition-transform hover:rotate-12" />
+      <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-background/95 backdrop-blur-md shadow-lg border-b border-default-color/20' : 'bg-transparent'
+      }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-10 h-10 bg-gradient-to-br from-accent-color to-primary rounded-xl flex items-center justify-center">
+                <Shield className="w-6 h-6 text-contrast-color" />
+              </div>
+              <span className="text-2xl font-bold text-heading-color">LoanPro</span>
             </div>
-            <div>
-              <h1 className="sitename text-2xl font-bold text-gradient">LoanPro</h1>
-              <p className="text-sm text-white/70">Management System</p>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex space-x-8">
+              <button onClick={() => scrollToSection('home')} className="text-default-color hover:text-accent-color transition-colors font-medium">Home</button>
+              <button onClick={() => scrollToSection('about')} className="text-default-color hover:text-accent-color transition-colors font-medium">About</button>
+              <button onClick={() => scrollToSection('services')} className="text-default-color hover:text-accent-color transition-colors font-medium">Services</button>
+              <button onClick={() => scrollToSection('testimonials')} className="text-default-color hover:text-accent-color transition-colors font-medium">Testimonials</button>
+              <button onClick={() => scrollToSection('contact')} className="text-default-color hover:text-accent-color transition-colors font-medium">Contact</button>
+            </nav>
+
+            <div className="flex items-center space-x-4">
+              <Button
+                onClick={onGetStarted}
+                className="hidden sm:flex bg-gradient-to-r from-accent-color to-primary text-contrast-color border-none shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Get Started
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 rounded-lg hover:bg-accent-color/10 transition-colors"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
             </div>
-          </a>
-
-          <nav id="navmenu" className="navmenu">
-            <ul>
-              <li><a href="#hero" className="active">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#testimonials">Testimonials</a></li>
-              <li><a href="#pricing">Pricing</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-            <i className="mobile-nav-toggle d-xl-none bi bi-list"></i>
-          </nav>
-
-          <div className="header-social-links">
-            <Button
-              variant="ghost"
-              onClick={onGetStarted}
-              className="text-white/90 hover:text-white hover:bg-white/10 glass transition-all duration-300"
-            >
-              Login
-            </Button>
-            <Button
-              onClick={onGetStarted}
-              className="btn-modern px-6 py-2 rounded-lg font-semibold shadow-glow hover-bounce"
-            >
-              Get Started
-            </Button>
           </div>
+
+          {/* Mobile Navigation */}
+          {mobileMenuOpen && (
+            <div className="md:hidden bg-surface-color border-t border-default-color/20">
+              <div className="px-4 py-6 space-y-4">
+                <button onClick={() => scrollToSection('home')} className="block w-full text-left text-default-color hover:text-accent-color transition-colors font-medium py-2">Home</button>
+                <button onClick={() => scrollToSection('about')} className="block w-full text-left text-default-color hover:text-accent-color transition-colors font-medium py-2">About</button>
+                <button onClick={() => scrollToSection('services')} className="block w-full text-left text-default-color hover:text-accent-color transition-colors font-medium py-2">Services</button>
+                <button onClick={() => scrollToSection('testimonials')} className="block w-full text-left text-default-color hover:text-accent-color transition-colors font-medium py-2">Testimonials</button>
+                <button onClick={() => scrollToSection('contact')} className="block w-full text-left text-default-color hover:text-accent-color transition-colors font-medium py-2">Contact</button>
+                <Button
+                  onClick={onGetStarted}
+                  className="w-full bg-gradient-to-r from-accent-color to-primary text-contrast-color border-none shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Get Started
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 
       {/* Hero Section */}
-      <section id="hero" className="hero section">
-        <div className="hero-background">
-          <div className="hero-overlay"></div>
+      <section id="home" className="relative min-h-screen flex items-center bg-gradient-to-br from-background via-surface-color/20 to-background overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-accent-color/5 to-primary/5"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23008870" fill-opacity="0.03"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="text-center lg:text-left">
+              <Badge className="mb-6 bg-accent-color/10 text-accent-color border-accent-color/20 px-4 py-2 text-sm font-medium">
+                🚀 Next-Generation Loan Management
+              </Badge>
+
+              <h1 className="text-4xl md:text-6xl font-bold text-heading-color mb-6 leading-tight">
+                Smart Loan
+                <span className="bg-gradient-to-r from-accent-color to-primary bg-clip-text text-transparent"> Management</span>
+                <br />Made Simple
+              </h1>
+
+              <p className="text-xl text-default-color/70 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                Streamline your lending operations with our comprehensive loan management platform.
+                From application to repayment, manage everything in one powerful dashboard.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <Button
+                  onClick={onGetStarted}
+                  size="lg"
+                  className="bg-gradient-to-r from-accent-color to-primary text-contrast-color border-none shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-4 text-lg"
+                >
+                  Start Free Trial
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => scrollToSection('about')}
+                  className="border-2 border-accent-color text-accent-color hover:bg-accent-color hover:text-contrast-color px-8 py-4 text-lg"
+                >
+                  <Play className="mr-2 w-5 h-5" />
+                  Watch Demo
+                </Button>
+              </div>
+
+              <div className="mt-12 grid grid-cols-3 gap-8 max-w-md mx-auto lg:mx-0">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-heading-color">10K+</div>
+                  <div className="text-sm text-default-color/60">Active Users</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-heading-color">$2M+</div>
+                  <div className="text-sm text-default-color/60">Loans Managed</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-heading-color">99.9%</div>
+                  <div className="text-sm text-default-color/60">Uptime</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="relative bg-gradient-to-br from-surface-color to-background p-8 rounded-3xl shadow-2xl border border-default-color/20">
+                <div className="aspect-square bg-gradient-to-br from-accent-color/10 to-primary/10 rounded-2xl flex items-center justify-center">
+                  <div className="w-32 h-32 bg-gradient-to-br from-accent-color to-primary rounded-full flex items-center justify-center shadow-lg">
+                    <BarChart3 className="w-16 h-16 text-contrast-color" />
+                  </div>
+                </div>
+
+                {/* Floating Cards */}
+                <div className="absolute -top-4 -right-4 bg-surface-color p-4 rounded-xl shadow-lg border border-default-color/20">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <CheckCircle className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-sm font-medium text-heading-color">Loan Approved</span>
+                  </div>
+                </div>
+
+                <div className="absolute -bottom-4 -left-4 bg-surface-color p-4 rounded-xl shadow-lg border border-default-color/20">
+                  <div className="flex items-center space-x-2">
+                    <TrendingUp className="w-5 h-5 text-accent-color" />
+                    <div>
+                      <div className="text-sm font-bold text-heading-color">+24%</div>
+                      <div className="text-xs text-default-color/60">Growth</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="container" data-aos="fade-up" data-aos-delay="100">
-          <div className="row justify-content-center text-center">
-            <div className="col-lg-10">
-              <div className="hero-content" data-aos="fade-up" data-aos-delay="200">
-                <h1>Innovative Business Solutions for Tomorrow</h1>
-                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.</p>
-
-                <div className="hero-btns" data-aos="fade-up" data-aos-delay="300">
-                  <Button
-                    onClick={onGetStarted}
-                    className="btn btn-primary hover-lift"
-                  >
-                    Start Your Journey
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={onGetStarted}
-                    className="btn btn-outline glightbox hover-lift"
-                  >
-                    <Play className="w-4 h-4 mr-2" />
-                    Watch Demo
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <div className="hero-image-container" data-aos="zoom-in" data-aos-delay="400">
-                <div className="hero-image">
-                  <div className="w-full h-96 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-glow-lg">
-                    <Banknote className="w-24 h-24 text-white" />
-                  </div>
-                  <div className="image-decoration"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row justify-content-center">
-            <div className="col-lg-10">
-              <div className="hero-stats" data-aos="fade-up" data-aos-delay="500">
-                <div className="stat-item">
-                  <div className="stat-icon">
-                    <Users className="w-6 h-6" />
-                  </div>
-                  <h3><span data-purecounter-start="0" data-purecounter-end="1247" data-purecounter-duration="1" className="purecounter">1,247</span>+</h3>
-                  <p>Active Clients</p>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-icon">
-                    <Banknote className="w-6 h-6" />
-                  </div>
-                  <h3><span data-purecounter-start="0" data-purecounter-end="850" data-purecounter-duration="1" className="purecounter">850</span>+</h3>
-                  <p>Loans Processed</p>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-icon">
-                    <TrendingUp className="w-6 h-6" />
-                  </div>
-                  <h3><span data-purecounter-start="0" data-purecounter-end="95" data-purecounter-duration="1" className="purecounter">95</span>%</h3>
-                  <p>Success Rate</p>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-icon">
-                    <Shield className="w-6 h-6" />
-                  </div>
-                  <h3><span data-purecounter-start="0" data-purecounter-end="12" data-purecounter-duration="1" className="purecounter">12</span>+</h3>
-                  <p>Years Experience</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <ChevronDown className="w-6 h-6 text-default-color/50" />
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="about section">
-        <div className="container section-title" data-aos="fade-up">
-          <span className="description-title">About</span>
-          <h2>About</h2>
-          <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-        </div>
+      <section id="about" className="py-20 bg-gradient-to-br from-surface-color/30 to-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-accent-color/10 text-accent-color border-accent-color/20 px-4 py-2">
+              About LoanPro
+            </Badge>
+            <h2 className="text-4xl font-bold text-heading-color mb-6">
+              Revolutionizing Loan Management
+            </h2>
+            <p className="text-xl text-default-color/70 max-w-3xl mx-auto">
+              We combine cutting-edge technology with deep financial expertise to deliver
+              the most comprehensive loan management solution available.
+            </p>
+          </div>
 
-        <div className="container" data-aos="fade-up" data-aos-delay="100">
-          <div className="row gx-0 gx-lg-5 gy-5 align-items-center">
-            <div className="col-lg-6" data-aos="zoom-out" data-aos-delay="200">
-              <div className="image-wrapper">
-                <div className="image-box">
-                  <div className="w-full h-96 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-glow-lg">
-                    <Calculator className="w-24 h-24 text-white" />
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="relative">
+              <div className="bg-gradient-to-br from-accent-color/10 to-primary/10 p-8 rounded-3xl">
+                <div className="bg-gradient-to-br from-surface-color to-background p-6 rounded-2xl">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-gradient-to-br from-accent-color to-primary p-6 rounded-xl text-center">
+                      <Users className="w-8 h-8 text-contrast-color mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-contrast-color">50K+</div>
+                      <div className="text-sm text-contrast-color/80">Clients Served</div>
+                    </div>
+                    <div className="bg-surface-color p-6 rounded-xl text-center border border-default-color/20">
+                      <TrendingUp className="w-8 h-8 text-accent-color mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-heading-color">98%</div>
+                      <div className="text-sm text-default-color/60">Success Rate</div>
+                    </div>
+                    <div className="bg-surface-color p-6 rounded-xl text-center border border-default-color/20">
+                      <Shield className="w-8 h-8 text-accent-color mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-heading-color">256-bit</div>
+                      <div className="text-sm text-default-color/60">Encryption</div>
+                    </div>
+                    <div className="bg-gradient-to-br from-accent-color to-primary p-6 rounded-xl text-center">
+                      <BarChart3 className="w-8 h-8 text-contrast-color mx-auto mb-2" />
+                      <div className="text-2xl font-bold text-contrast-color">24/7</div>
+                      <div className="text-sm text-contrast-color/80">Support</div>
+                    </div>
                   </div>
-                </div>
-                <div className="experience-box" data-aos="zoom-in" data-aos-delay="300">
-                  <div className="years">15+</div>
-                  <div className="text">Years of<br />Experience</div>
                 </div>
               </div>
             </div>
 
-            <div className="col-lg-6" data-aos="fade-left" data-aos-delay="200">
-              <div className="content">
-                <div className="section-header">
-                  <h2>Empowering Businesses Through Innovative Solutions</h2>
-                </div>
-
-                <p className="highlight-text">Agile methodologies drive our collaborative approach, ensuring optimal outcomes across diverse industry verticals.</p>
-
-                <div className="features-list">
-                  <div className="feature-item" data-aos="zoom-in" data-aos-delay="300">
-                    <div className="icon-box">
-                      <CheckCircle className="w-5 h-5" />
-                    </div>
-                    <div className="text">
-                      <h4>Expert Consulting</h4>
-                      <p>In today's dynamic market landscape, strategic implementation of emerging technologies drives competitive advantage and sustainable growth trajectories.</p>
-                    </div>
-                  </div>
-
-                  <div className="feature-item" data-aos="zoom-in" data-aos-delay="400">
-                    <div className="icon-box">
-                      <TrendingUp className="w-5 h-5" />
-                    </div>
-                    <div className="text">
-                      <h4>Innovative Solutions</h4>
-                      <p>Leveraging cutting-edge frameworks and methodologies to deliver scalable solutions that address complex business challenges effectively.</p>
-                    </div>
-                  </div>
-
-                  <div className="feature-item" data-aos="zoom-in" data-aos-delay="500">
-                    <div className="icon-box">
-                      <Shield className="w-5 h-5" />
-                    </div>
-                    <div className="text">
-                      <h4>Growth Strategy</h4>
-                      <p>Our comprehensive approach to digital transformation enables organizations to achieve sustainable competitive advantages in their respective markets.</p>
-                    </div>
+            <div className="space-y-6">
+              <h3 className="text-3xl font-bold text-heading-color">
+                Why Choose LoanPro?
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-4">
+                  <CheckCircle className="w-6 h-6 text-accent-color mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-lg font-semibold text-heading-color mb-2">Advanced Analytics</h4>
+                    <p className="text-default-color/70">Get deep insights into your loan portfolio with real-time analytics and reporting.</p>
                   </div>
                 </div>
-
-                <div className="cta-buttons">
-                  <Button
-                    onClick={onGetStarted}
-                    className="btn btn-primary hover-lift"
-                  >
-                    Learn More
-                  </Button>
-                  <Button
-                    onClick={onGetStarted}
-                    variant="outline"
-                    className="btn btn-outline hover-lift"
-                  >
-                    Get Started
-                  </Button>
+                <div className="flex items-start space-x-4">
+                  <CheckCircle className="w-6 h-6 text-accent-color mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-lg font-semibold text-heading-color mb-2">Automated Workflows</h4>
+                    <p className="text-default-color/70">Streamline your processes with intelligent automation and smart notifications.</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-4">
+                  <CheckCircle className="w-6 h-6 text-accent-color mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-lg font-semibold text-heading-color mb-2">Bank-Level Security</h4>
+                    <p className="text-default-color/70">Your data is protected with enterprise-grade security and compliance standards.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -354,344 +284,342 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="services section">
-        <div className="container section-title" data-aos="fade-up">
-          <span className="description-title">Services</span>
-          <h2>Services</h2>
-          <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-        </div>
-
-        <div className="container" data-aos="fade-up" data-aos-delay="100">
-          <div className="services-container">
-            <div className="row g-4">
-              {services.map((service, index) => (
-                <div key={index} className="col-lg-6" data-aos="fade-up" data-aos-delay={200 + index * 100}>
-                  <div className="service-item hover-lift">
-                    <div className="service-icon">
-                      <service.icon className="w-8 h-8" />
-                    </div>
-                    <div className="service-content">
-                      <span className="service-number">{service.number}</span>
-                      <h3 className="service-title">{service.title}</h3>
-                      <p className="service-text">{service.description}</p>
-                      <a href="#" className="service-link">
-                        Learn More
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+      <section id="services" className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-accent-color/10 text-accent-color border-accent-color/20 px-4 py-2">
+              Our Services
+            </Badge>
+            <h2 className="text-4xl font-bold text-heading-color mb-6">
+              Comprehensive Loan Solutions
+            </h2>
+            <p className="text-xl text-default-color/70 max-w-3xl mx-auto">
+              From application processing to portfolio management, we provide everything you need
+              to run a successful lending operation.
+            </p>
           </div>
 
-          <div className="cta-wrapper mt-5 text-center" data-aos="fade-up" data-aos-delay="100">
-            <div className="row">
-              <div className="col-lg-8 offset-lg-2">
-                <div className="cta-box">
-                  <div className="row align-items-center">
-                    <div className="col-lg-4">
-                      <div className="cta-image" data-aos="zoom-in" data-aos-delay="200">
-                        <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center shadow-glow-lg mx-auto">
-                          <Banknote className="w-16 h-16 text-white" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-8">
-                      <div className="cta-content text-lg-start" data-aos="fade-left" data-aos-delay="300">
-                        <h3>Need a Custom Solution?</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis.</p>
-                        <Button
-                          onClick={onGetStarted}
-                          className="btn btn-primary hover-lift"
-                        >
-                          Schedule a Consultation
-                        </Button>
-                      </div>
-                    </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Users,
+                title: "Client Management",
+                description: "Complete CRM system for managing borrowers, applications, and relationships."
+              },
+              {
+                icon: BarChart3,
+                title: "Analytics & Reporting",
+                description: "Advanced analytics with customizable dashboards and comprehensive reporting."
+              },
+              {
+                icon: Shield,
+                title: "Risk Assessment",
+                description: "AI-powered credit scoring and risk analysis for informed decision making."
+              },
+              {
+                icon: TrendingUp,
+                title: "Portfolio Management",
+                description: "Track performance, manage collections, and optimize your loan portfolio."
+              },
+              {
+                icon: CheckCircle,
+                title: "Compliance & Security",
+                description: "Stay compliant with regulatory requirements and bank-level security."
+              },
+              {
+                icon: Phone,
+                title: "24/7 Support",
+                description: "Round-the-clock technical support and dedicated account management."
+              }
+            ].map((service, index) => (
+              <Card key={index} className="bg-gradient-to-br from-surface-color to-background border-default-color/20 hover:border-accent-color/30 transition-all duration-300 hover:shadow-xl group">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-accent-color to-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <service.icon className="w-8 h-8 text-contrast-color" />
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section id="testimonials" className="testimonials section light-background">
-        <div className="container section-title" data-aos="fade-up">
-          <span className="description-title">Testimonials</span>
-          <h2>Testimonials</h2>
-          <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-        </div>
-
-        <div className="container" data-aos="fade-up" data-aos-delay="100">
-          <div className="testimonials-slider swiper init-swiper">
-            <div className="swiper-wrapper">
-              {testimonials.map((testimonial, index) => (
-                <div key={index} className="swiper-slide">
-                  <div className="testimonial-card hover-lift">
-                    <div className="testimonial-content">
-                      <p>
-                        <i className="bi bi-quote quote-icon"></i>
-                        {testimonial.content}
-                      </p>
-                    </div>
-                    <div className="testimonial-profile">
-                      <div className="rating">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-current" />
-                        ))}
-                      </div>
-                      <div className="profile-info">
-                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
-                          <Users className="w-6 h-6 text-white" />
-                        </div>
-                        <div>
-                          <h3>{testimonial.author}</h3>
-                          <h4>{testimonial.role}</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="swiper-pagination"></div>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section id="pricing" className="pricing section">
-        <div className="container section-title" data-aos="fade-up">
-          <span className="description-title">Pricing</span>
-          <h2>Pricing</h2>
-          <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
-        </div>
-
-        <div className="container" data-aos="fade-up" data-aos-delay="100">
-          <div className="row g-4">
-            {pricingPlans.map((plan, index) => (
-              <div key={index} className="col-lg-4" data-aos="fade-up" data-aos-delay={200 + index * 100}>
-                <div className={`pricing-card ${plan.popular ? 'featured' : ''} hover-lift`}>
-                  <div className="pricing-header">
-                    <h3>{plan.name}</h3>
-                    <div className="price">
-                      <span className="currency">$</span>
-                      <span className="amount">{plan.price}</span>
-                      <span className="period">{plan.period}</span>
-                    </div>
-                  </div>
-                  <ul className="features-list">
-                    {plan.features.map((feature, i) => (
-                      <li key={i}>
-                        <CheckCircle className="w-4 h-4 mr-2" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="text-center">
-                    <Button
-                      onClick={onGetStarted}
-                      className={`btn ${plan.popular ? 'btn-primary' : 'btn-outline'} hover-lift`}
-                    >
-                      Choose Plan
-                    </Button>
-                  </div>
-                </div>
-              </div>
+                  <h3 className="text-xl font-bold text-heading-color mb-4">{service.title}</h3>
+                  <p className="text-default-color/70 leading-relaxed">{service.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="contact section">
-        <div className="container section-title" data-aos="fade-up">
-          <span className="description-title">Contact</span>
-          <h2>Contact</h2>
-          <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+      {/* Testimonials Section */}
+      <section id="testimonials" className="py-20 bg-gradient-to-br from-surface-color/30 to-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-accent-color/10 text-accent-color border-accent-color/20 px-4 py-2">
+              Testimonials
+            </Badge>
+            <h2 className="text-4xl font-bold text-heading-color mb-6">
+              What Our Clients Say
+            </h2>
+            <p className="text-xl text-default-color/70 max-w-3xl mx-auto">
+              Don't just take our word for it. Here's what industry leaders say about LoanPro.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Sarah Johnson",
+                position: "CEO, FinanceCorp",
+                content: "LoanPro has transformed our lending operations. The automation and analytics have increased our efficiency by 300%.",
+                rating: 5,
+                image: "SJ"
+              },
+              {
+                name: "Michael Chen",
+                position: "Director, Credit Union Plus",
+                content: "The risk assessment tools are incredible. We've reduced default rates by 40% since implementing LoanPro.",
+                rating: 5,
+                image: "MC"
+              },
+              {
+                name: "Emily Rodriguez",
+                position: "VP Operations, BankTrust",
+                content: "Outstanding platform with excellent support. The compliance features give us complete peace of mind.",
+                rating: 5,
+                image: "ER"
+              }
+            ].map((testimonial, index) => (
+              <Card key={index} className="bg-gradient-to-br from-surface-color to-background border-default-color/20 hover:border-accent-color/30 transition-all duration-300 hover:shadow-xl">
+                <CardContent className="p-8">
+                  <div className="flex mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-default-color/80 mb-6 italic">"{testimonial.content}"</p>
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-gradient-to-br from-accent-color to-primary rounded-full flex items-center justify-center text-contrast-color font-bold mr-4">
+                      {testimonial.image}
+                    </div>
+                    <div>
+                      <div className="font-semibold text-heading-color">{testimonial.name}</div>
+                      <div className="text-sm text-default-color/60">{testimonial.position}</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
+      </section>
 
-        <div className="container">
-          <div className="contact-wrapper">
-            <div className="contact-info-panel">
-              <div className="contact-info-header">
-                <h3>Contact Information</h3>
-                <p>Dignissimos deleniti accusamus rerum voluptate. Dignissimos rerum sit maiores reiciendis voluptate inventore ut.</p>
-              </div>
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-accent-color to-primary">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-contrast-color mb-6">
+            Ready to Transform Your Lending Business?
+          </h2>
+          <p className="text-xl text-contrast-color/80 mb-8">
+            Join thousands of financial institutions already using LoanPro to streamline their operations.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              onClick={onGetStarted}
+              size="lg"
+              className="bg-contrast-color text-accent-color border-none shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-4 text-lg hover:scale-105"
+            >
+              Start Your Free Trial
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={() => scrollToSection('contact')}
+              className="border-2 border-contrast-color text-contrast-color hover:bg-contrast-color hover:text-accent-color px-8 py-4 text-lg"
+            >
+              Contact Sales
+            </Button>
+          </div>
+        </div>
+      </section>
 
-              <div className="contact-info-cards">
-                <div className="info-card">
-                  <div className="icon-container">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div className="card-content">
-                    <h4>Our Location</h4>
-                    <p>4952 Hilltop Dr, Anytown, CA 90210</p>
-                  </div>
+      {/* Contact Section */}
+      <section id="contact" className="py-20 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-accent-color/10 text-accent-color border-accent-color/20 px-4 py-2">
+              Contact Us
+            </Badge>
+            <h2 className="text-4xl font-bold text-heading-color mb-6">
+              Get In Touch
+            </h2>
+            <p className="text-xl text-default-color/70 max-w-3xl mx-auto">
+              Have questions about LoanPro? Our team is here to help you get started.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12">
+            <div className="space-y-8">
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-accent-color to-primary rounded-xl flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-6 h-6 text-contrast-color" />
                 </div>
-
-                <div className="info-card">
-                  <div className="icon-container">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div className="card-content">
-                    <h4>Email Us</h4>
-                    <p>info@loanpro.com</p>
-                  </div>
-                </div>
-
-                <div className="info-card">
-                  <div className="icon-container">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div className="card-content">
-                    <h4>Call Us</h4>
-                    <p>+1 (555) 123-4567</p>
-                  </div>
-                </div>
-
-                <div className="info-card">
-                  <div className="icon-container">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <div className="card-content">
-                    <h4>Working Hours</h4>
-                    <p>Monday-Saturday: 9AM - 7PM</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="social-links-panel">
-                <h5>Follow Us</h5>
-                <div className="social-icons">
-                  <a href="#"><i className="bi bi-facebook"></i></a>
-                  <a href="#"><i className="bi bi-twitter-x"></i></a>
-                  <a href="#"><i className="bi bi-instagram"></i></a>
-                  <a href="#"><i className="bi bi-linkedin"></i></a>
-                  <a href="#"><i className="bi bi-youtube"></i></a>
-                </div>
-              </div>
-            </div>
-
-            <div className="contact-form-panel">
-              <div className="map-container">
-                <div className="w-full h-80 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center">
-                  <MapPin className="w-16 h-16 text-white" />
+                <div>
+                  <h3 className="text-lg font-semibold text-heading-color mb-2">Office Location</h3>
+                  <p className="text-default-color/70">123 Financial District<br />New York, NY 10001</p>
                 </div>
               </div>
 
-              <div className="form-container">
-                <h3>Send Us a Message</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit mauris hendrerit faucibus imperdiet nec eget felis.</p>
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-accent-color to-primary rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-6 h-6 text-contrast-color" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-heading-color mb-2">Phone</h3>
+                  <p className="text-default-color/70">+1 (555) 123-LOAN<br />Mon-Fri 9AM-6PM EST</p>
+                </div>
+              </div>
 
-                <form className="php-email-form">
-                  <div className="form-floating mb-3">
-                    <input type="text" className="form-control" id="nameInput" name="name" placeholder="Full Name" required />
-                    <label htmlFor="nameInput">Full Name</label>
-                  </div>
+              <div className="flex items-start space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-accent-color to-primary rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Mail className="w-6 h-6 text-contrast-color" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-heading-color mb-2">Email</h3>
+                  <p className="text-default-color/70">hello@loanpro.com<br />support@loanpro.com</p>
+                </div>
+              </div>
 
-                  <div className="form-floating mb-3">
-                    <input type="email" className="form-control" id="emailInput" name="email" placeholder="Email Address" required />
-                    <label htmlFor="emailInput">Email Address</label>
-                  </div>
-
-                  <div className="form-floating mb-3">
-                    <input type="text" className="form-control" id="subjectInput" name="subject" placeholder="Subject" required />
-                    <label htmlFor="subjectInput">Subject</label>
-                  </div>
-
-                  <div className="form-floating mb-3">
-                    <textarea className="form-control" id="messageInput" name="message" rows={5} placeholder="Your Message" style={{ height: '150px' }} required></textarea>
-                    <label htmlFor="messageInput">Your Message</label>
-                  </div>
-
-                  <div className="my-3">
-                    <div className="loading">Loading</div>
-                    <div className="error-message"></div>
-                    <div className="sent-message">Your message has been sent. Thank you!</div>
-                  </div>
-
-                  <div className="d-grid">
-                    <Button
-                      type="submit"
-                      className="btn btn-primary hover-lift"
-                    >
-                      Send Message <i className="bi bi-send-fill ms-2"></i>
-                    </Button>
-                  </div>
-                </form>
+              <div className="pt-8">
+                <h3 className="text-lg font-semibold text-heading-color mb-4">Follow Us</h3>
+                <div className="flex space-x-4">
+                  <a href="#" className="w-10 h-10 bg-gradient-to-br from-accent-color to-primary rounded-lg flex items-center justify-center text-contrast-color hover:scale-110 transition-transform duration-300">
+                    <Facebook className="w-5 h-5" />
+                  </a>
+                  <a href="#" className="w-10 h-10 bg-gradient-to-br from-accent-color to-primary rounded-lg flex items-center justify-center text-contrast-color hover:scale-110 transition-transform duration-300">
+                    <Twitter className="w-5 h-5" />
+                  </a>
+                  <a href="#" className="w-10 h-10 bg-gradient-to-br from-accent-color to-primary rounded-lg flex items-center justify-center text-contrast-color hover:scale-110 transition-transform duration-300">
+                    <Instagram className="w-5 h-5" />
+                  </a>
+                  <a href="#" className="w-10 h-10 bg-gradient-to-br from-accent-color to-primary rounded-lg flex items-center justify-center text-contrast-color hover:scale-110 transition-transform duration-300">
+                    <Linkedin className="w-5 h-5" />
+                  </a>
+                </div>
               </div>
             </div>
+
+            <Card className="bg-gradient-to-br from-surface-color to-background border-default-color/20">
+              <CardHeader>
+                <CardTitle className="text-2xl text-heading-color">Send us a Message</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-heading-color">First Name</label>
+                    <input
+                      type="text"
+                      className="w-full px-4 py-3 bg-background border border-default-color/20 rounded-xl focus:border-accent-color focus:ring-2 focus:ring-accent-color/20 transition-all duration-300"
+                      placeholder="John"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-heading-color">Last Name</label>
+                    <input
+                      type="text"
+                      className="w-full px-4 py-3 bg-background border border-default-color/20 rounded-xl focus:border-accent-color focus:ring-2 focus:ring-accent-color/20 transition-all duration-300"
+                      placeholder="Doe"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-heading-color">Email</label>
+                  <input
+                    type="email"
+                    className="w-full px-4 py-3 bg-background border border-default-color/20 rounded-xl focus:border-accent-color focus:ring-2 focus:ring-accent-color/20 transition-all duration-300"
+                    placeholder="john@company.com"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-heading-color">Message</label>
+                  <textarea
+                    rows={4}
+                    className="w-full px-4 py-3 bg-background border border-default-color/20 rounded-xl focus:border-accent-color focus:ring-2 focus:ring-accent-color/20 transition-all duration-300 resize-none"
+                    placeholder="Tell us about your needs..."
+                  />
+                </div>
+
+                <Button className="w-full bg-gradient-to-r from-accent-color to-primary text-contrast-color border-none shadow-lg hover:shadow-xl transition-all duration-300 py-3">
+                  Send Message
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer id="footer" className="footer light-background">
-        <div className="container">
-          <div className="row gy-3">
-            <div className="col-lg-3 col-md-6 d-flex">
-              <i className="bi bi-geo-alt icon"></i>
-              <div className="address">
-                <h4>Address</h4>
-                <p>A108 Adam Street</p>
-                <p>New York, NY 535022</p>
-                <p></p>
+      <footer className="bg-gradient-to-br from-surface-color to-background border-t border-default-color/20 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div className="md:col-span-2">
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 bg-gradient-to-br from-accent-color to-primary rounded-lg flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-contrast-color" />
+                </div>
+                <span className="text-xl font-bold text-heading-color">LoanPro</span>
+              </div>
+              <p className="text-default-color/70 mb-4 max-w-md">
+                Revolutionizing loan management with cutting-edge technology and unparalleled customer service.
+              </p>
+              <div className="flex space-x-4">
+                <a href="#" className="text-default-color/60 hover:text-accent-color transition-colors">
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-default-color/60 hover:text-accent-color transition-colors">
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-default-color/60 hover:text-accent-color transition-colors">
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-default-color/60 hover:text-accent-color transition-colors">
+                  <Linkedin className="w-5 h-5" />
+                </a>
               </div>
             </div>
 
-            <div className="col-lg-3 col-md-6 d-flex">
-              <i className="bi bi-telephone icon"></i>
-              <div>
-                <h4>Contact</h4>
-                <p>
-                  <strong>Phone:</strong> <span>+1 5589 55488 55</span><br />
-                  <strong>Email:</strong> <span>info@loanpro.com</span><br />
-                </p>
-              </div>
+            <div>
+              <h3 className="text-lg font-semibold text-heading-color mb-4">Product</h3>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-default-color/70 hover:text-accent-color transition-colors">Features</a></li>
+                <li><a href="#" className="text-default-color/70 hover:text-accent-color transition-colors">Pricing</a></li>
+                <li><a href="#" className="text-default-color/70 hover:text-accent-color transition-colors">Security</a></li>
+                <li><a href="#" className="text-default-color/70 hover:text-accent-color transition-colors">API</a></li>
+              </ul>
             </div>
 
-            <div className="col-lg-3 col-md-6 d-flex">
-              <i className="bi bi-clock icon"></i>
-              <div>
-                <h4>Opening Hours</h4>
-                <p>
-                  <strong>Mon-Sat:</strong> <span>11AM - 23PM</span><br />
-                  <strong>Sunday</strong>: <span>Closed</span>
-                </p>
-              </div>
-            </div>
-
-            <div className="col-lg-3 col-md-6">
-              <h4>Follow Us</h4>
-              <div className="social-links d-flex">
-                <a href="#" className="twitter"><i className="bi bi-twitter-x"></i></a>
-                <a href="#" className="facebook"><i className="bi bi-facebook"></i></a>
-                <a href="#" className="instagram"><i className="bi bi-instagram"></i></a>
-                <a href="#" className="linkedin"><i className="bi bi-linkedin"></i></a>
-              </div>
+            <div>
+              <h3 className="text-lg font-semibold text-heading-color mb-4">Support</h3>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-default-color/70 hover:text-accent-color transition-colors">Documentation</a></li>
+                <li><a href="#" className="text-default-color/70 hover:text-accent-color transition-colors">Help Center</a></li>
+                <li><a href="#" className="text-default-color/70 hover:text-accent-color transition-colors">Contact Us</a></li>
+                <li><a href="#" className="text-default-color/70 hover:text-accent-color transition-colors">Status</a></li>
+              </ul>
             </div>
           </div>
-        </div>
 
-        <div className="container copyright text-center mt-4">
-          <p>© <span>Copyright</span> <strong className="px-1 sitename">LoanPro</strong> <span>All Rights Reserved</span></p>
-          <div className="credits">
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          <div className="border-t border-default-color/20 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-default-color/60 text-sm">
+              © 2025 LoanPro. All rights reserved.
+            </p>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <a href="#" className="text-default-color/60 hover:text-accent-color transition-colors text-sm">Privacy Policy</a>
+              <a href="#" className="text-default-color/60 hover:text-accent-color transition-colors text-sm">Terms of Service</a>
+              <a href="#" className="text-default-color/60 hover:text-accent-color transition-colors text-sm">Cookie Policy</a>
+            </div>
           </div>
         </div>
       </footer>
-
-      {/* Scroll Top */}
-      <a href="#" id="scroll-top" className="scroll-top d-flex align-items-center justify-content-center">
-        <i className="bi bi-arrow-up-short"></i>
-      </a>
-
-      {/* Preloader */}
-      <div id="preloader"></div>
     </div>
   );
 }
