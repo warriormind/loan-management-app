@@ -50,6 +50,7 @@ import { BranchesTab } from './components/BranchesTab';
 import { StaffRolesTab } from './components/StaffRolesTab';
 import { CalendarTab } from './components/CalendarTab';
 import { PortfolioDetails } from './components/PortfolioDetails';
+import { ServiceDetails } from './components/ServiceDetails';
 
 // Import signup flow components
 import { SignupForm } from './components/SignupForm';
@@ -70,6 +71,7 @@ const adminNavigationItems = [
   { id: 'reports', label: 'Reports', icon: FileText, component: ReportsTab },
   { id: 'accounting', label: 'Accounting', icon: Calculator, component: AccountingTab },
   { id: 'risk', label: 'Credit & Risk', icon: Shield, component: CreditRiskModule },
+  { id: 'services', label: 'Service Details', icon: Settings, component: ServiceDetails },
   { id: 'portfolio', label: 'Portfolio', icon: FileText, component: PortfolioDetails },
   { id: 'settings', label: 'Account Settings', icon: Settings, component: SettingsTab },
   { id: 'branches', label: 'Branches', icon: Building, component: BranchesTab },
