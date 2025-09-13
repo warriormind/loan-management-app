@@ -28,7 +28,6 @@ import {
 
 // Import components
 import { LoginPage } from './components/LoginPage';
-import { LandingPage } from './components/LandingPage';
 import { BorrowerDashboard } from './components/BorrowerDashboard';
 import { KYCVerification } from './components/KYCVerification';
 import { CreditAssessment } from './components/CreditAssessment';
@@ -97,7 +96,7 @@ export default function App() {
   const [userEmail, setUserEmail] = useState('');
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<'landing' | 'login' | 'signup' | 'kyc' | 'success' | 'tutorial'>('landing');
+  const [currentView, setCurrentView] = useState<'login' | 'signup' | 'kyc' | 'success' | 'tutorial'>('login');
   const [signupData, setSignupData] = useState<any>(null);
   const [showTutorial, setShowTutorial] = useState(false);
 
@@ -117,10 +116,6 @@ export default function App() {
 
   const handleGetStarted = () => {
     setCurrentView('signup');
-  };
-
-  const handleGoToLogin = () => {
-    setCurrentView('login');
   };
 
   const handleSignupComplete = (userData: any) => {
@@ -151,14 +146,9 @@ export default function App() {
     setCurrentView('dashboard');
   };
 
-  const handleBackToLanding = () => {
-    setCurrentView('landing');
+  const handleBackToLogin = () => {
+    setCurrentView('login');
   };
-
-  // Show landing page first
-  if (!isAuthenticated && currentView === 'landing') {
-    return <LandingPage onGetStarted={handleGetStarted} onLogin={handleGoToLogin} />;
-  }
 
   // Show login page if not authenticated
   if (!isAuthenticated && currentView === 'login') {
@@ -167,7 +157,7 @@ export default function App() {
 
   // Show signup form
   if (!isAuthenticated && currentView === 'signup') {
-    return <SignupForm onComplete={handleSignupComplete} onBack={handleBackToLanding} />;
+    return <SignupForm onComplete={handleSignupComplete} onBack={handleBackToLogin} />;
   }
 
   // Show KYC verification
