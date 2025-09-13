@@ -187,21 +187,21 @@ export default function App() {
   return (
     <SidebarProvider>
       <div className="flex h-screen bg-background">
-        <Sidebar className="border-r transition-all duration-300">
-          <SidebarHeader className="border-b px-6 py-4 hover-lift">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center hover-scale transition-transform">
-                <Banknote className="w-5 h-5 text-primary-foreground" />
+        <Sidebar className="border-r transition-all duration-300 shadow-xl">
+          <SidebarHeader className="border-b px-6 py-4 hover-lift bg-gradient-to-r from-primary/10 to-accent/10">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-accent-color to-primary rounded-xl flex items-center justify-center hover-scale transition-transform shadow-lg">
+                <Banknote className="w-6 h-6 text-contrast-color" />
               </div>
               <div>
-                <h1 className="font-semibold">LoanPro</h1>
-                <p className="text-sm text-muted-foreground">Management System</p>
+                <h1 className="font-bold text-lg text-heading-color">LoanPro</h1>
+                <p className="text-sm text-default-color/70">Management System</p>
               </div>
             </div>
           </SidebarHeader>
 
-          <SidebarContent className="px-4 py-4">
-            <SidebarMenu>
+          <SidebarContent className="px-4 py-6">
+            <SidebarMenu className="space-y-2">
               {navigationItems.map((item) => (
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
@@ -210,10 +210,10 @@ export default function App() {
                       setIsMobileMenuOpen(false);
                     }}
                     isActive={activeTab === item.id}
-                    className="w-full justify-start gap-3 px-3 py-2 transition-all duration-200 hover:bg-accent hover:text-accent-foreground hover:translate-x-1 hover:shadow-sm btn-interactive"
+                    className="w-full justify-start gap-4 px-4 py-3 transition-all duration-300 hover:bg-accent/20 hover:text-accent-color hover:translate-x-2 hover:shadow-md btn-interactive rounded-lg group"
                   >
-                    <item.icon className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
-                    <span>{item.label}</span>
+                    <item.icon className="w-5 h-5 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
+                    <span className="font-medium">{item.label}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -222,16 +222,16 @@ export default function App() {
         </Sidebar>
 
         <div className="flex-1 flex flex-col overflow-hidden">
-          <header className="border-b px-6 py-4 flex items-center justify-between transition-all duration-300">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger className="lg:hidden hover-scale transition-transform">
-                <Menu className="w-5 h-5" />
+          <header className="border-b border-default-color/20 px-8 py-6 flex items-center justify-between transition-all duration-300 bg-gradient-to-r from-background to-surface-color/30 backdrop-blur-sm">
+            <div className="flex items-center gap-6">
+              <SidebarTrigger className="lg:hidden hover-scale transition-transform p-2 rounded-lg hover:bg-accent/20">
+                <Menu className="w-6 h-6" />
               </SidebarTrigger>
               <div className="fade-in">
-                <h2 className="text-xl font-semibold transition-colors">
+                <h2 className="text-2xl font-bold text-heading-color transition-colors">
                   {navigationItems.find(item => item.id === activeTab)?.label}
                 </h2>
-                <p className="text-sm text-muted-foreground transition-colors">
+                <p className="text-sm text-default-color/70 transition-colors mt-1">
                   {userRole === 'admin'
                     ? `Manage your ${navigationItems.find(item => item.id === activeTab)?.label.toLowerCase()}`
                     : `Welcome back, ${userEmail.split('@')[0]}`
@@ -241,14 +241,15 @@ export default function App() {
             </div>
 
             <div className="flex items-center gap-4">
-              <Badge variant="outline" className="hidden sm:flex hover-lift transition-all">
+              <Badge variant="outline" className="hidden sm:flex hover-lift transition-all px-4 py-2 bg-gradient-to-r from-accent-color/10 to-primary/10 border-accent-color/30 text-accent-color font-medium">
                 {userRole === 'admin' ? 'Admin' : 'Client'}
               </Badge>
-              <Badge variant="outline" className="hidden sm:flex hover-lift transition-all pulse">
+              <Badge variant="outline" className="hidden sm:flex hover-lift transition-all px-4 py-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/30 text-green-500 font-medium pulse">
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
                 Live
               </Badge>
               {userRole === 'admin' && (
-                <Button variant="outline" size="sm" className="btn-interactive hover-lift">
+                <Button variant="outline" size="sm" className="btn-interactive hover-lift px-6 py-2 bg-gradient-to-r from-accent-color to-primary text-contrast-color border-none shadow-lg hover:shadow-xl transition-all duration-300">
                   Export
                 </Button>
               )}
@@ -256,7 +257,7 @@ export default function App() {
                 variant="outline"
                 size="sm"
                 onClick={handleLogout}
-                className="flex items-center gap-2 btn-interactive hover-lift transition-all"
+                className="flex items-center gap-3 btn-interactive hover-lift px-6 py-2 bg-gradient-to-r from-red-500/10 to-red-600/10 border-red-500/30 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300"
               >
                 <LogOut className="w-4 h-4 transition-transform hover:rotate-12" />
                 Logout
@@ -264,8 +265,10 @@ export default function App() {
             </div>
           </header>
 
-          <main className="flex-1 overflow-auto p-6 slide-in-right">
-            <ActiveComponent />
+          <main className="flex-1 overflow-auto p-8 slide-in-right bg-gradient-to-br from-background to-surface-color/20">
+            <div className="max-w-7xl mx-auto">
+              <ActiveComponent />
+            </div>
           </main>
         </div>
       </div>

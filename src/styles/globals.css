@@ -199,6 +199,9 @@ html {
   font-size: var(--font-size);
 }
 
+/* Import Nexa Template Styles */
+@import './nexa-template.css';
+
 /* Modern Design System */
 @layer utilities {
   /* Glassmorphism Effects */
