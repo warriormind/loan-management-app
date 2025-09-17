@@ -31,8 +31,18 @@ import {
   UserCheck
 } from 'lucide-react';
 
+interface SignupFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  password: string;
+  confirmPassword: string;
+}
+
 interface LandingPageProps {
-  onGetStarted: () => void;
+  onGetStarted: (data: SignupFormData) => void;
   onLogin: () => void;
 }
 
@@ -96,9 +106,9 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev: SignupFormData) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
+      setErrors((prev: Record<string, string>) => ({ ...prev, [field]: '' }));
     }
   };
 
