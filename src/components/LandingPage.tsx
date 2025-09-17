@@ -165,33 +165,33 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+    <div className="min-h-screen">
       {/* Header */}
       <header className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-5">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
                 <Banknote className="w-7 h-7 text-white" />
               </div>
               <div>
                 <span className="text-2xl font-bold text-gray-900 tracking-tight">LoanPro</span>
-                <p className="text-xs text-gray-500 -mt-1">Financial Solutions</p>
+                <p className="text-xs text-cyan-600 -mt-1 font-medium">Financial Solutions</p>
               </div>
             </div>
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">Features</a>
-              <a href="#services" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">Services</a>
-              <a href="#about" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">About</a>
-              <a href="#contact" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">Contact</a>
+              <a href="#features" className="text-gray-700 hover:text-cyan-600 font-medium transition-colors">Features</a>
+              <a href="#services" className="text-gray-700 hover:text-cyan-600 font-medium transition-colors">Services</a>
+              <a href="#about" className="text-gray-700 hover:text-cyan-600 font-medium transition-colors">About</a>
+              <a href="#contact" className="text-gray-700 hover:text-cyan-600 font-medium transition-colors">Contact</a>
             </nav>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" onClick={onLogin} className="text-gray-600 hover:text-blue-600 hover:bg-blue-50 font-medium">
+              <Button variant="ghost" onClick={onLogin} className="text-gray-700 hover:text-cyan-600 hover:bg-cyan-50 font-medium">
                 Sign In
               </Button>
               <Button
                 onClick={() => document.getElementById('register')?.scrollIntoView({ behavior: 'smooth' })}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-600 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 Get Started
               </Button>
@@ -203,19 +203,19 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       {/* Hero Section */}
       <section className="relative py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-transparent to-indigo-600/5"></div>
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-teal-600/5"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-400/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-teal-400/10 rounded-full blur-3xl"></div>
 
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center mb-20">
-            <Badge className="mb-6 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 hover:from-blue-200 hover:to-indigo-200 px-4 py-2 text-sm font-medium border-0 shadow-sm">
+            <Badge className="mb-6 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 hover:from-cyan-200 hover:to-teal-200 px-4 py-2 text-sm font-medium border-0 shadow-sm">
               <Star className="w-4 h-4 mr-2" />
               Trusted by 10,000+ Financial Professionals
             </Badge>
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
               Transform Your{' '}
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-cyan-500 to-teal-600 bg-clip-text text-transparent">
                 Financial Future
               </span>
             </h1>
@@ -227,7 +227,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
               <Button
                 size="lg"
                 onClick={() => document.getElementById('register')?.scrollIntoView({ behavior: 'smooth' })}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 px-8 py-4 text-lg font-semibold"
+                className="bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-600 hover:to-teal-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 px-8 py-4 text-lg font-semibold"
               >
                 Start Free Trial
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -236,7 +236,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
                 variant="outline"
                 size="lg"
                 onClick={onLogin}
-                className="border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 text-gray-700 hover:text-blue-700 px-8 py-4 text-lg font-semibold transition-all duration-300"
+                className="border-2 border-gray-300 hover:border-cyan-500 hover:bg-cyan-50 text-gray-700 hover:text-cyan-700 px-8 py-4 text-lg font-semibold transition-all duration-300"
               >
                 Sign In to Dashboard
               </Button>
@@ -264,11 +264,11 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
             {stats.map((stat, index) => (
               <Card key={index} className="text-center bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                 <CardContent className="p-8">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-3">
+                  <div className="text-4xl font-bold bg-gradient-to-r from-cyan-500 to-teal-600 bg-clip-text text-transparent mb-3">
                     {stat.value}
                   </div>
                   <div className="text-gray-600 font-medium text-lg">{stat.label}</div>
-                  <div className="mt-2 w-12 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mx-auto"></div>
+                  <div className="mt-2 w-12 h-1 bg-gradient-to-r from-cyan-500 to-teal-600 rounded-full mx-auto"></div>
                 </CardContent>
               </Card>
             ))}
@@ -280,7 +280,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       <section id="services" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <Badge className="mb-4 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 px-4 py-2">
+            <Badge className="mb-4 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 px-4 py-2">
               <Target className="w-4 h-4 mr-2" />
               Enterprise-Grade Solutions
             </Badge>
@@ -297,18 +297,18 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <Card key={index} className="group relative bg-white border-0 shadow-lg hover:shadow-2xl transition-all duration-500 hover:scale-105 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-teal-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="relative z-10 pb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
                     <service.icon className="w-8 h-8 text-white" />
                   </div>
-                  <CardTitle className="text-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                  <CardTitle className="text-2xl font-bold text-gray-900 group-hover:text-cyan-600 transition-colors">
                     {service.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="relative z-10">
                   <p className="text-gray-600 leading-relaxed text-lg">{service.description}</p>
-                  <div className="mt-6 flex items-center text-blue-600 font-medium group-hover:text-blue-700 transition-colors">
+                  <div className="mt-6 flex items-center text-cyan-600 font-medium group-hover:text-cyan-700 transition-colors">
                     <span>Learn more</span>
                     <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -332,10 +332,10 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-24 bg-gradient-to-br from-gray-50 to-blue-50/30">
+      <section id="features" className="py-24 bg-gradient-to-br from-gray-50 to-cyan-50/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <Badge className="mb-4 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 px-4 py-2">
+            <Badge className="mb-4 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 px-4 py-2">
               <CheckCircle className="w-4 h-4 mr-2" />
               Why Choose LoanPro
             </Badge>
@@ -383,11 +383,11 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
                 }
               ].map((feature, index) => (
                 <div key={index} className="flex items-start space-x-4 group">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                     <feature.icon className="w-6 h-6 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-cyan-600 transition-colors">
                       {feature.title}
                     </h3>
                     <p className="text-gray-600 leading-relaxed">{feature.description}</p>
@@ -402,14 +402,14 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
                 <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105">
                   <CardContent className="p-8">
                     <div className="flex items-center justify-between mb-6">
-                      <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center">
+                      <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-2xl flex items-center justify-center">
                         <Award className="w-8 h-8 text-white" />
                       </div>
-                      <Badge className="bg-green-100 text-green-700">2024 Winner</Badge>
+                      <Badge className="bg-cyan-100 text-cyan-700">2024 Winner</Badge>
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">Best FinTech Platform</h3>
                     <p className="text-gray-600 mb-4">Recognized by Global Finance Magazine for innovation in lending technology</p>
-                    <div className="flex items-center text-green-600 font-semibold">
+                    <div className="flex items-center text-cyan-600 font-semibold">
                       <Star className="w-5 h-5 mr-2 fill-current" />
                       <span>4.9/5 Customer Rating</span>
                     </div>
@@ -419,14 +419,14 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
                 <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105">
                   <CardContent className="p-8">
                     <div className="flex items-center justify-between mb-6">
-                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center">
+                      <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-2xl flex items-center justify-center">
                         <Shield className="w-8 h-8 text-white" />
                       </div>
-                      <Badge className="bg-blue-100 text-blue-700">Certified</Badge>
+                      <Badge className="bg-cyan-100 text-cyan-700">Certified</Badge>
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">ISO 27001 & SOC 2</h3>
                     <p className="text-gray-600 mb-4">Certified for information security and data protection standards</p>
-                    <div className="flex items-center text-blue-600 font-semibold">
+                    <div className="flex items-center text-cyan-600 font-semibold">
                       <CheckCircle className="w-5 h-5 mr-2" />
                       <span>Bank-Level Security</span>
                     </div>
@@ -442,7 +442,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <Badge className="mb-4 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 px-4 py-2">
+            <Badge className="mb-4 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 px-4 py-2">
               <Heart className="w-4 h-4 mr-2" />
               What Our Clients Say
             </Badge>
@@ -489,13 +489,13 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
                     "{testimonial.quote}"
                   </blockquote>
                   <div className="flex items-center">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
                       {testimonial.avatar}
                     </div>
                     <div>
                       <div className="font-semibold text-gray-900">{testimonial.author}</div>
                       <div className="text-sm text-gray-600">{testimonial.title}</div>
-                      <div className="text-sm text-blue-600 font-medium">{testimonial.company}</div>
+                      <div className="text-sm text-cyan-600 font-medium">{testimonial.company}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -674,7 +674,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
               {/* Company Info */}
               <div className="lg:col-span-4">
                 <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+                  <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
                     <Banknote className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -750,7 +750,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
                     placeholder="Enter your email"
                     className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
-                  <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-2 px-4 rounded-lg font-medium transition-all duration-300 hover:shadow-lg">
+                  <button className="w-full bg-gradient-to-r from-cyan-500 to-teal-600 hover:from-cyan-600 hover:to-teal-700 text-white py-2 px-4 rounded-lg font-medium transition-all duration-300 hover:shadow-lg">
                     Subscribe
                   </button>
                 </div>
