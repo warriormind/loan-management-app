@@ -1055,14 +1055,44 @@ export function BorrowerDashboardNew() {
             </div>
           </header>
 
-          <main className="flex-1 overflow-auto p-6">
+          <main className="flex-1 overflow-auto p-6 pb-24 md:pb-6">
             {renderActiveComponent()}
           </main>
         </div>
       </div>
 
+      {/* Bottom Navigation Bar for Easy Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl md:hidden">
+        <div className="flex overflow-x-auto px-2 py-2 space-x-1 scrollbar-hide">
+          {borrowerNavigationItems.map((item) => (
+            <Button
+              key={item.id}
+              variant={activeTab === item.id ? "default" : "ghost"}
+              size="sm"
+              onClick={() => handleTabChange(item.id)}
+              className={`flex-shrink-0 flex flex-col items-center gap-1 h-16 px-3 min-w-[70px] rounded-xl transition-all duration-300 ${
+                activeTab === item.id
+                  ? 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white shadow-lg scale-105'
+                  : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50 hover:scale-102'
+              }`}
+            >
+              <item.icon className={`w-5 h-5 transition-all duration-300 ${
+                activeTab === item.id ? 'scale-110' : ''
+              }`} />
+              <span className="text-xs font-medium truncate">{item.label}</span>
+              {activeTab === item.id && (
+                <div className="w-6 h-0.5 bg-white rounded-full mt-1"></div>
+              )}
+            </Button>
+          ))}
+        </div>
+
+        {/* Safe area for devices with home indicator */}
+        <div className="h-safe-area-inset-bottom bg-white"></div>
+      </div>
+
       {/* Floating Action Button for Quick Loan Application */}
-      <div className="fixed bottom-6 right-6 z-50 md:hidden">
+      <div className="fixed bottom-20 right-6 z-50 md:hidden">
         <Button
           size="lg"
           onClick={() => setIsWizardOpen(true)}
