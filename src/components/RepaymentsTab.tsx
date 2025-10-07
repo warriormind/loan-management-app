@@ -13,7 +13,7 @@ const mockRepayments = [
   {
     id: 'R001',
     loanId: 'L001',
-    clientName: 'John Smith',
+    borrowerName: 'John Smith',
     amount: 832.50,
     principal: 625.40,
     interest: 207.10,
@@ -26,7 +26,7 @@ const mockRepayments = [
   {
     id: 'R002',
     loanId: 'L002',
-    clientName: 'Sarah Johnson',
+    borrowerName: 'Sarah Johnson',
     amount: 695.20,
     principal: 565.30,
     interest: 129.90,
@@ -39,7 +39,7 @@ const mockRepayments = [
   {
     id: 'R003',
     loanId: 'L003',
-    clientName: 'Michael Brown',
+    borrowerName: 'Michael Brown',
     amount: 854.30,
     principal: 0,
     interest: 0,
@@ -52,7 +52,7 @@ const mockRepayments = [
   {
     id: 'R004',
     loanId: 'L004',
-    clientName: 'Emily Davis',
+    borrowerName: 'Emily Davis',
     amount: 835.40,
     principal: 698.20,
     interest: 137.20,
@@ -65,7 +65,7 @@ const mockRepayments = [
   {
     id: 'R005',
     loanId: 'L001',
-    clientName: 'John Smith',
+    borrowerName: 'John Smith',
     amount: 832.50,
     principal: 0,
     interest: 0,
@@ -83,8 +83,8 @@ export function RepaymentsTab() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   const filteredRepayments = mockRepayments.filter(repayment => {
-    const matchesSearch = repayment.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          repayment.loanId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = repayment.borrowerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         repayment.loanId.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          repayment.id.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesStatus = statusFilter === 'all' || repayment.status.toLowerCase() === statusFilter;
@@ -293,7 +293,7 @@ export function RepaymentsTab() {
                 <TableRow>
                   <TableHead>Payment ID</TableHead>
                   <TableHead>Loan ID</TableHead>
-                  <TableHead>Client</TableHead>
+                  <TableHead>Borrower</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Principal</TableHead>
                   <TableHead>Interest</TableHead>
@@ -309,7 +309,7 @@ export function RepaymentsTab() {
                   <TableRow key={repayment.id}>
                     <TableCell className="font-medium">{repayment.id}</TableCell>
                     <TableCell>{repayment.loanId}</TableCell>
-                    <TableCell className="font-medium">{repayment.clientName}</TableCell>
+                    <TableCell className="font-medium">{repayment.borrowerName}</TableCell>
                     <TableCell className="font-semibold">K{repayment.amount.toLocaleString()}</TableCell>
                     <TableCell>
                       {repayment.principal > 0 ? `K${repayment.principal.toLocaleString()}` : '-'}

@@ -117,7 +117,7 @@ export function SettingsTab() {
             <div className="flex items-center justify-between">
               <div>
                 <Label>Payment Reminders</Label>
-                <p className="text-sm text-muted-foreground">Send payment reminders to clients</p>
+                <p className="text-sm text-muted-foreground">Send payment reminders to borrowers</p>
               </div>
               <Switch defaultChecked />
             </div>

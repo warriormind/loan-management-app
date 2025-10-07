@@ -13,8 +13,8 @@ import { Search, Plus, Eye, Edit, DollarSign, Calendar, Percent } from 'lucide-r
 const mockLoans = [
   {
     id: 'L001',
-    clientId: 'C001',
-    clientName: 'John Smith',
+    borrowerId: 'B001',
+    borrowerName: 'John Smith',
     amount: 25000,
     interestRate: 12.5,
     term: 36,
@@ -27,8 +27,8 @@ const mockLoans = [
   },
   {
     id: 'L002',
-    clientId: 'C002',
-    clientName: 'Sarah Johnson',
+    borrowerId: 'B002',
+    borrowerName: 'Sarah Johnson',
     amount: 15000,
     interestRate: 10.8,
     term: 24,
@@ -41,8 +41,8 @@ const mockLoans = [
   },
   {
     id: 'L003',
-    clientId: 'C003',
-    clientName: 'Michael Brown',
+    borrowerId: 'B003',
+    borrowerName: 'Michael Brown',
     amount: 30000,
     interestRate: 15.2,
     term: 48,
@@ -55,8 +55,8 @@ const mockLoans = [
   },
   {
     id: 'L004',
-    clientId: 'C004',
-    clientName: 'Emily Davis',
+    borrowerId: 'B004',
+    borrowerName: 'Emily Davis',
     amount: 40000,
     interestRate: 9.5,
     term: 60,
@@ -74,9 +74,9 @@ export function LoansTab() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   const filteredLoans = mockLoans.filter(loan =>
-    loan.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    loan.borrowerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     loan.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    loan.clientId.toLowerCase().includes(searchTerm.toLowerCase())
+    loan.borrowerId.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const getStatusColor = (status: string) => {
@@ -187,10 +187,10 @@ export function LoansTab() {
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
                     <div className="grid gap-2">
-                      <Label htmlFor="client">Client</Label>
+                      <Label htmlFor="borrower">Borrower</Label>
                       <Select>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select client" />
+                          <SelectValue placeholder="Select borrower" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="B001">John Smith (B001)</SelectItem>
@@ -237,7 +237,7 @@ export function LoansTab() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Loan ID</TableHead>
-                  <TableHead>Client</TableHead>
+                  <TableHead>Borrower</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Interest Rate</TableHead>
                   <TableHead>Term</TableHead>
@@ -253,8 +253,8 @@ export function LoansTab() {
                     <TableCell className="font-medium">{loan.id}</TableCell>
                     <TableCell>
                       <div>
-                        <div className="font-medium">{loan.clientName}</div>
-                        <div className="text-sm text-muted-foreground">{loan.clientId}</div>
+                        <div className="font-medium">{loan.borrowerName}</div>
+                        <div className="text-sm text-muted-foreground">{loan.borrowerId}</div>
                       </div>
                     </TableCell>
                     <TableCell>

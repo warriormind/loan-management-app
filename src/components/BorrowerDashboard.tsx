@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Sidebar, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarProvider, SidebarTrigger } from './ui/sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -24,39 +25,53 @@ import {
   Upload,
   RefreshCw,
   AlertTriangle,
-  Zap
+  Zap,
+  User,
+  Banknote,
+  Menu,
+  LogOut,
+  Users,
+  PiggyBank,
+  Receipt,
+  Settings
 } from 'lucide-react';
 import { ClientChatbot } from './ClientChatbot';
+import { LoanApplicationWizard } from './LoanApplicationWizard';
+import { ApplicationStatusPage } from './ApplicationStatusPage';
+import { BorrowerRepayments } from './BorrowerRepayments';
+import { BorrowerRequests } from './BorrowerRequests';
 
 const clientData = {
   name: "John Smith",
   email: "john.smith@email.com",
   creditScore: 720,
-  totalLoans: "K45,000",
-  outstandingBalance: "K12,500",
+  totalLoans: 45000,
+  outstandingBalance: 12500,
   nextPayment: {
-    amount: "K2,500",
+    amount: 2500,
     dueDate: "2024-01-25",
     daysLeft: 5
   },
   daysOverdue: 0,
+  overduePenalty: 0,
   activeLoans: [
     {
       id: "LN001",
-      amount: "K25,000",
-      outstanding: "K12,500",
-      nextPayment: "K2,500",
+      amount: 25000,
+      outstanding: 12500,
+      nextPayment: 2500,
       dueDate: "2024-01-25",
       daysOverdue: 0,
+      penalty: 0,
       status: "active"
     }
   ],
   recentPayments: [
-    { id: "PAY001", amount: "K2,500", date: "2024-01-10", status: "completed", loanId: "LN001" },
-    { id: "PAY002", amount: "K2,500", date: "2024-01-05", status: "completed", loanId: "LN001" },
-    { id: "PAY003", amount: "K2,500", date: "2023-12-25", status: "completed", loanId: "LN001" },
-    { id: "PAY004", amount: "K2,500", date: "2023-12-10", status: "completed", loanId: "LN001" },
-    { id: "PAY005", amount: "K2,500", date: "2023-11-25", status: "completed", loanId: "LN001" },
+    { id: "PAY001", amount: 2500, date: "2024-01-10", status: "completed", loanId: "LN001" },
+    { id: "PAY002", amount: 2500, date: "2024-01-05", status: "completed", loanId: "LN001" },
+    { id: "PAY003", amount: 2500, date: "2023-12-25", status: "completed", loanId: "LN001" },
+    { id: "PAY004", amount: 2500, date: "2023-12-10", status: "completed", loanId: "LN001" },
+    { id: "PAY005", amount: 2500, date: "2023-11-25", status: "completed", loanId: "LN001" },
   ],
   upcomingPayments: [
     { id: "PAY006", amount: "K2,500", dueDate: "2024-01-25", status: "pending", loanId: "LN001" },
@@ -69,13 +84,43 @@ const clientData = {
   ],
   kycStatus: "verified",
   loanApplications: [
-    { id: "APP001", amount: "K25,000", status: "approved", date: "2024-01-15" },
-    { id: "APP002", amount: "K15,000", status: "pending", date: "2024-01-20" },
+    { id: "APP001", amount: 25000, status: "approved", date: "2024-01-15" },
+    { id: "APP002", amount: 15000, status: "pending", date: "2024-01-20" },
   ]
 };
 
+const borrowerNavigationItems = [
+  { id: 'dashboard', label: 'Dashboard', icon: BarChart3, component: 'dashboard' },
+  { id: 'loans', label: 'My Loans', icon: Banknote, component: 'loans' },
+  { id: 'applications', label: 'Applications', icon: FileCheck, component: 'applications' },
+  { id: 'payments', label: 'Payments', icon: CreditCard, component: 'payments' },
+  { id: 'requests', label: 'Requests', icon: RefreshCw, component: 'requests' },
+  { id: 'documents', label: 'Documents', icon: FileCheck, component: 'documents' },
+  { id: 'profile', label: 'Profile', icon: User, component: 'profile' },
+];
+
 export function BorrowerDashboard() {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
+
+  // Utility functions for formatting
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-ZM', {
+      style: 'currency',
+      currency: 'ZMW',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(amount);
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-ZM', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      timeZone: 'Africa/Lusaka'
+    });
+  };
 
   const getKycStatusColor = (status: string) => {
     switch (status) {
@@ -95,50 +140,199 @@ export function BorrowerDashboard() {
     }
   };
 
-  return (
-    <div className="space-y-6">
-      {/* Welcome Header */}
-      <div className="bg-gradient-to-r from-[#00AEEF] to-[#00CED1] rounded-lg p-6 text-white">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">Welcome back, {clientData.name}!</h1>
-            <p className="text-blue-100 mt-1">Here's your client management overview</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-                <Bell className="w-5 h-5" />
-                {clientData.notifications.filter(n => n.unread).length > 0 && (
-                  <Badge className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs bg-red-500">
-                    {clientData.notifications.filter(n => n.unread).length}
-                  </Badge>
-                )}
+  const handleLoanApplication = (application: any) => {
+    // Handle loan application submission
+    console.log('Loan application submitted:', application);
+    // Here you would typically send the application to your backend
+    // For now, we'll just show a success message
+    alert('Loan application submitted successfully! Application ID: APP' + Date.now());
+  };
+
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+  };
+
+  const handleSignOut = async () => {
+    // Handle sign out - could redirect to landing page
+    window.location.href = '/';
+  };
+
+  const renderActiveComponent = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return (
+          <div className="space-y-6">
+            {/* Welcome Header */}
+            <div className="bg-gradient-to-r from-[#00AEEF] to-[#00CED1] rounded-lg p-6 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-2xl font-bold">Welcome back, {clientData.name}!</h1>
+                  <p className="text-blue-100 mt-1">Here's your financial overview</p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                      <Bell className="w-5 h-5" />
+                      {clientData.notifications.filter(n => n.unread).length > 0 && (
+                        <Badge className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs bg-red-500">
+                          {clientData.notifications.filter(n => n.unread).length}
+                        </Badge>
+                      )}
+                    </Button>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-blue-100">Credit Score</p>
+                    <p className="text-2xl font-bold">{clientData.creditScore}</p>
+                  </div>
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                    <Target className="w-8 h-8" />
+                  </div>
+                </div>
+              </div>
+            </div>
+    <SidebarProvider>
+      <div className="flex flex-col h-screen bg-background">
+        <Sidebar className="border-r">
+          <SidebarHeader className="border-b px-6 py-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <Banknote className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="font-semibold">LoanPro</h1>
+                <p className="text-sm text-muted-foreground">Borrower Portal</p>
+              </div>
+            </div>
+          </SidebarHeader>
+
+          <SidebarContent className="px-4 py-4">
+            <SidebarMenu>
+              {borrowerNavigationItems.map((item) => (
+                <SidebarMenuItem key={item.id}>
+                  <SidebarMenuButton
+                    onClick={() => handleTabChange(item.id)}
+                    isActive={activeTab === item.id}
+                    className="w-full justify-start gap-3 px-3 py-2"
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span>{item.label}</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+
+            {/* User info and sign out at bottom */}
+            <div className="mt-auto pt-4 border-t">
+              <div className="px-3 py-2 text-sm text-muted-foreground">
+                Signed in as: {clientData.name}
+              </div>
+              <Button
+                onClick={handleSignOut}
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start gap-3 px-3 py-2"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Sign Out</span>
               </Button>
             </div>
-            <div className="text-right">
-              <p className="text-sm text-blue-100">Credit Score</p>
-              <p className="text-2xl font-bold">{clientData.creditScore}</p>
+          </SidebarContent>
+        </Sidebar>
+
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <header className="border-b px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <SidebarTrigger className="lg:hidden">
+                <Menu className="w-5 h-5" />
+              </SidebarTrigger>
+              <div>
+                <h2 className="text-xl font-semibold">
+                  {borrowerNavigationItems.find(item => item.id === activeTab)?.label}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Manage your {borrowerNavigationItems.find(item => item.id === activeTab)?.label.toLowerCase()}
+                </p>
+              </div>
             </div>
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-              <Target className="w-8 h-8" />
+
+            <div className="flex items-center gap-4">
+              <Badge variant="outline" className="hidden sm:flex">
+                Borrower Portal
+              </Badge>
+              <div className="text-right hidden sm:block">
+                <p className="text-sm text-muted-foreground">Credit Score</p>
+                <p className="text-lg font-bold">{clientData.creditScore}</p>
+              </div>
+              <Button variant="outline" size="sm">
+                Export
+              </Button>
             </div>
-          </div>
+          </header>
+
+          <main className="flex-1 overflow-auto p-6">
+            {renderActiveComponent()}
+          </main>
         </div>
       </div>
+    </SidebarProvider>
+  );
+
+  const renderActiveComponent = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return (
+          <div className="space-y-6">
+            {/* Welcome Header */}
+            <div className="bg-gradient-to-r from-[#00AEEF] to-[#00CED1] rounded-lg p-6 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-2xl font-bold">Welcome back, {clientData.name}!</h1>
+                  <p className="text-blue-100 mt-1">Here's your financial overview</p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                      <Bell className="w-5 h-5" />
+                      {clientData.notifications.filter(n => n.unread).length > 0 && (
+                        <Badge className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs bg-red-500">
+                          {clientData.notifications.filter(n => n.unread).length}
+                        </Badge>
+                      )}
+                    </Button>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-blue-100">Credit Score</p>
+                    <p className="text-2xl font-bold">{clientData.creditScore}</p>
+                  </div>
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                    <Target className="w-8 h-8" />
+                  </div>
+                </div>
+              </div>
+            </div>
 
       {/* Active Loan Summary */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {clientData.activeLoans.map((loan) => (
-          <Card key={loan.id} className="border-l-4 border-l-[#00AEEF]">
+          <Card key={loan.id} className={`border-l-4 ${loan.daysOverdue > 0 ? 'border-l-red-500' : 'border-l-[#00AEEF]'}`}>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Outstanding Balance</p>
-                  <p className="text-2xl font-semibold text-red-600">{loan.outstanding}</p>
+                  <p className={`text-2xl font-semibold ${loan.daysOverdue > 0 ? 'text-red-600' : 'text-red-600'}`}>
+                    {formatCurrency(loan.outstanding)}
+                  </p>
                   <p className="text-xs text-muted-foreground">Loan {loan.id}</p>
+                  {loan.penalty > 0 && (
+                    <p className="text-xs text-red-600 font-medium mt-1">
+                      Penalty: {formatCurrency(loan.penalty)}
+                    </p>
+                  )}
                 </div>
-                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                  <Wallet className="w-6 h-6 text-red-600" />
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                  loan.daysOverdue > 0 ? 'bg-red-100' : 'bg-red-100'
+                }`}>
+                  <Wallet className={`w-6 h-6 ${loan.daysOverdue > 0 ? 'text-red-600' : 'text-red-600'}`} />
                 </div>
               </div>
             </CardContent>
@@ -150,13 +344,23 @@ export function BorrowerDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Next Payment</p>
-                <p className="text-2xl font-semibold">{clientData.nextPayment.amount}</p>
-                <p className="text-sm text-muted-foreground">Due: {clientData.nextPayment.dueDate}</p>
+                <p className={`text-2xl font-semibold ${clientData.daysOverdue > 0 ? 'text-red-600' : ''}`}>
+                  {formatCurrency(clientData.nextPayment.amount)}
+                </p>
+                <p className="text-sm text-muted-foreground">Due: {formatDate(clientData.nextPayment.dueDate)}</p>
                 {clientData.daysOverdue > 0 && (
                   <div className="flex items-center gap-1 mt-1">
                     <AlertTriangle className="w-4 h-4 text-red-500" />
                     <span className="text-xs text-red-600 font-medium">
                       {clientData.daysOverdue} days overdue
+                    </span>
+                  </div>
+                )}
+                {clientData.overduePenalty > 0 && (
+                  <div className="flex items-center gap-1 mt-1">
+                    <AlertTriangle className="w-4 h-4 text-red-500" />
+                    <span className="text-xs text-red-600 font-medium">
+                      Penalty: {formatCurrency(clientData.overduePenalty)}
                     </span>
                   </div>
                 )}
@@ -177,8 +381,11 @@ export function BorrowerDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Next Installment</p>
-                <p className="text-2xl font-semibold">{clientData.nextPayment.amount}</p>
+                <p className="text-2xl font-semibold">{formatCurrency(clientData.nextPayment.amount)}</p>
                 <p className="text-sm text-muted-foreground">Due in {clientData.nextPayment.daysLeft} days</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {formatDate(clientData.nextPayment.dueDate)}
+                </p>
               </div>
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                 <DollarSign className="w-6 h-6 text-blue-600" />
@@ -237,12 +444,14 @@ export function BorrowerDashboard() {
 
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="payments">Payments</TabsTrigger>
-          <TabsTrigger value="loans">My Loans</TabsTrigger>
-          <TabsTrigger value="documents">Documents</TabsTrigger>
-        </TabsList>
+        <TabsList className="grid w-full grid-cols-6">
+           <TabsTrigger value="overview">Overview</TabsTrigger>
+           <TabsTrigger value="applications">Applications</TabsTrigger>
+           <TabsTrigger value="payments">Payments</TabsTrigger>
+           <TabsTrigger value="loans">My Loans</TabsTrigger>
+           <TabsTrigger value="requests">Requests</TabsTrigger>
+           <TabsTrigger value="documents">Documents</TabsTrigger>
+         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -277,7 +486,10 @@ export function BorrowerDashboard() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button className="w-full justify-start bg-[#00AEEF] hover:bg-[#0099CC] text-white">
+                <Button
+                  className="w-full justify-start bg-[#00AEEF] hover:bg-[#0099CC] text-white"
+                  onClick={() => setIsWizardOpen(true)}
+                >
                   <Plus className="w-4 h-4 mr-2" />
                   Apply for Loan
                 </Button>
@@ -335,10 +547,10 @@ export function BorrowerDashboard() {
                     </div>
                     <div className="text-right">
                       <p className={`font-semibold ${
-                        payment.status === 'completed' ? 'text-green-600' : 'text-yellow-600'
-                      }`}>
-                        {payment.amount}
-                      </p>
+                          payment.status === 'completed' ? 'text-green-600' : 'text-yellow-600'
+                        }`}>
+                         {formatCurrency(payment.amount)}
+                       </p>
                       <p className="text-sm text-muted-foreground">{payment.id}</p>
                     </div>
                   </div>
@@ -351,129 +563,253 @@ export function BorrowerDashboard() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="payments" className="space-y-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Upcoming Payments */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="w-5 h-5" />
-                  Upcoming Payments
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {clientData.upcomingPayments.map((payment) => (
-                    <div key={payment.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div>
-                        <p className="font-medium">{payment.amount}</p>
-                        <p className="text-sm text-muted-foreground">Due: {payment.dueDate}</p>
-                      </div>
-                      <Badge variant="outline" className="text-orange-600 border-orange-600">
-                        Pending
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+        <TabsContent value="applications" className="space-y-4">
+          <ApplicationStatusPage />
+        </TabsContent>
 
-            {/* Payment History */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
-                  Payment History
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {clientData.recentPayments.map((payment) => (
-                    <div key={payment.id} className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
-                      <div>
-                        <p className="font-medium">{payment.amount}</p>
-                        <p className="text-sm text-muted-foreground">{payment.date}</p>
-                      </div>
-                      <Badge className="bg-green-100 text-green-800">
-                        Completed
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+        <TabsContent value="payments" className="space-y-4">
+          <BorrowerRepayments />
         </TabsContent>
 
         <TabsContent value="loans" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>My Loan Applications</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {clientData.loanApplications.map((application) => (
-                  <div key={application.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <p className="font-medium">{application.amount}</p>
-                      <p className="text-sm text-muted-foreground">Applied: {application.date}</p>
-                    </div>
-                    <Badge
-                      variant={application.status === 'approved' ? 'default' : 'secondary'}
-                      className={application.status === 'approved' ? 'bg-green-100 text-green-800' : ''}
-                    >
-                      {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+           <Card>
+             <CardHeader>
+               <CardTitle>My Active Loans</CardTitle>
+             </CardHeader>
+             <CardContent>
+               <div className="space-y-4">
+                 {clientData.activeLoans.map((loan) => (
+                   <div key={loan.id} className="p-4 border rounded-lg">
+                     <div className="flex items-center justify-between mb-3">
+                       <div>
+                         <h4 className="font-semibold">Loan {loan.id}</h4>
+                         <p className="text-sm text-muted-foreground">
+                           Started: {formatDate('2023-06-15')}
+                         </p>
+                       </div>
+                       <Badge className={loan.daysOverdue > 0 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}>
+                         {loan.daysOverdue > 0 ? 'Overdue' : 'Active'}
+                       </Badge>
+                     </div>
 
-        <TabsContent value="documents" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <FileCheck className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold">Loan Statement</h3>
-                    <p className="text-sm text-muted-foreground">Latest statement for January 2024</p>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    <Download className="w-4 h-4 mr-2" />
-                    Download
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                       <div>
+                         <p className="text-muted-foreground">Principal</p>
+                         <p className="font-medium">{formatCurrency(loan.amount)}</p>
+                       </div>
+                       <div>
+                         <p className="text-muted-foreground">Outstanding</p>
+                         <p className="font-medium text-red-600">{formatCurrency(loan.outstanding)}</p>
+                       </div>
+                       <div>
+                         <p className="text-muted-foreground">Next Payment</p>
+                         <p className="font-medium">{formatCurrency(loan.nextPayment)}</p>
+                         <p className="text-xs text-muted-foreground">Due: {formatDate(loan.dueDate)}</p>
+                       </div>
+                       <div>
+                         <p className="text-muted-foreground">Monthly Payment</p>
+                         <p className="font-medium">{formatCurrency(832.50)}</p>
+                       </div>
+                     </div>
 
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <FileCheck className="w-6 h-6 text-green-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold">Clearance Certificate</h3>
-                    <p className="text-sm text-muted-foreground">Loan completion certificate</p>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    <Download className="w-4 h-4 mr-2" />
-                    Download
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
+                     {loan.daysOverdue > 0 && (
+                       <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+                         <div className="flex items-center gap-2">
+                           <AlertTriangle className="w-4 h-4 text-red-600" />
+                           <span className="text-sm font-medium text-red-800">
+                             {loan.daysOverdue} days overdue
+                           </span>
+                         </div>
+                         {loan.penalty > 0 && (
+                           <p className="text-sm text-red-600 mt-1">
+                             Penalty: {formatCurrency(loan.penalty)}
+                           </p>
+                         )}
+                       </div>
+                     )}
+
+                     <div className="flex gap-2 mt-4">
+                       <Button variant="outline" size="sm">
+                         View Schedule
+                       </Button>
+                       <Button variant="outline" size="sm">
+                         Download Statement
+                       </Button>
+                       <Button variant="outline" size="sm">
+                         Request Restructure
+                       </Button>
+                     </div>
+                   </div>
+                 ))}
+               </div>
+             </CardContent>
+           </Card>
+         </TabsContent>
+ 
+         <TabsContent value="requests" className="space-y-4">
+           <BorrowerRequests />
+         </TabsContent>
+ 
+         <TabsContent value="documents" className="space-y-4">
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+             {/* Loan Documents */}
+             <Card>
+               <CardHeader>
+                 <CardTitle className="flex items-center gap-2">
+                   <FileCheck className="w-5 h-5" />
+                   Loan Documents
+                 </CardTitle>
+               </CardHeader>
+               <CardContent className="space-y-4">
+                 <div className="flex items-center justify-between p-3 border rounded-lg">
+                   <div>
+                     <h4 className="font-medium">Loan Agreement</h4>
+                     <p className="text-sm text-muted-foreground">Signed on {formatDate('2023-06-15')}</p>
+                   </div>
+                   <Button variant="outline" size="sm">
+                     <Download className="w-4 h-4 mr-2" />
+                     Download
+                   </Button>
+                 </div>
+
+                 <div className="flex items-center justify-between p-3 border rounded-lg">
+                   <div>
+                     <h4 className="font-medium">Loan Statement</h4>
+                     <p className="text-sm text-muted-foreground">Latest statement for January 2024</p>
+                   </div>
+                   <Button variant="outline" size="sm">
+                     <Download className="w-4 h-4 mr-2" />
+                     Download
+                   </Button>
+                 </div>
+
+                 <div className="flex items-center justify-between p-3 border rounded-lg">
+                   <div>
+                     <h4 className="font-medium">Payment Schedule</h4>
+                     <p className="text-sm text-muted-foreground">Amortization schedule</p>
+                   </div>
+                   <Button variant="outline" size="sm">
+                     <Download className="w-4 h-4 mr-2" />
+                     Download
+                   </Button>
+                 </div>
+               </CardContent>
+             </Card>
+
+             {/* KYC Documents */}
+             <Card>
+               <CardHeader>
+                 <CardTitle className="flex items-center gap-2">
+                   <User className="w-5 h-5" />
+                   KYC Documents
+                 </CardTitle>
+               </CardHeader>
+               <CardContent className="space-y-4">
+                 <div className="flex items-center justify-between p-3 border rounded-lg">
+                   <div>
+                     <h4 className="font-medium">National ID</h4>
+                     <p className="text-sm text-muted-foreground">Verified on {formatDate('2023-06-10')}</p>
+                   </div>
+                   <Badge className="bg-green-100 text-green-800">Verified</Badge>
+                 </div>
+
+                 <div className="flex items-center justify-between p-3 border rounded-lg">
+                   <div>
+                     <h4 className="font-medium">Proof of Address</h4>
+                     <p className="text-sm text-muted-foreground">Utility bill - Verified</p>
+                   </div>
+                   <Badge className="bg-green-100 text-green-800">Verified</Badge>
+                 </div>
+
+                 <div className="flex items-center justify-between p-3 border rounded-lg">
+                   <div>
+                     <h4 className="font-medium">Bank Statement</h4>
+                     <p className="text-sm text-muted-foreground">Latest 3 months</p>
+                   </div>
+                   <Button variant="outline" size="sm">
+                     <Upload className="w-4 h-4 mr-2" />
+                     Update
+                   </Button>
+                 </div>
+               </CardContent>
+             </Card>
+
+             {/* Certificates */}
+             <Card>
+               <CardHeader>
+                 <CardTitle className="flex items-center gap-2">
+                   <CheckCircle className="w-5 h-5" />
+                   Certificates
+                 </CardTitle>
+               </CardHeader>
+               <CardContent className="space-y-4">
+                 <div className="flex items-center justify-between p-3 border rounded-lg">
+                   <div>
+                     <h4 className="font-medium">Clearance Certificate</h4>
+                     <p className="text-sm text-muted-foreground">Available upon loan completion</p>
+                   </div>
+                   <Badge variant="secondary">Pending</Badge>
+                 </div>
+
+                 <div className="flex items-center justify-between p-3 border rounded-lg">
+                   <div>
+                     <h4 className="font-medium">Good Standing Certificate</h4>
+                     <p className="text-sm text-muted-foreground">Loan performance certificate</p>
+                   </div>
+                   <Button variant="outline" size="sm">
+                     <Download className="w-4 h-4 mr-2" />
+                     Request
+                   </Button>
+                 </div>
+               </CardContent>
+             </Card>
+
+             {/* Upload New Document */}
+             <Card>
+               <CardHeader>
+                 <CardTitle className="flex items-center gap-2">
+                   <Upload className="w-5 h-5" />
+                   Upload Documents
+                 </CardTitle>
+               </CardHeader>
+               <CardContent className="space-y-4">
+                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                   <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                   <p className="text-sm text-muted-foreground mb-2">
+                     Drag and drop files here or click to browse
+                   </p>
+                   <p className="text-xs text-muted-foreground">
+                     Supported formats: PDF, JPG, PNG (Max 5MB each)
+                   </p>
+                   <Button variant="outline" className="mt-3">
+                     Browse Files
+                   </Button>
+                 </div>
+
+                 <div className="text-sm text-muted-foreground">
+                   <p className="font-medium mb-1">Common document types:</p>
+                   <ul className="list-disc list-inside space-y-1">
+                     <li>Bank statements</li>
+                     <li>Salary slips</li>
+                     <li>Tax certificates</li>
+                     <li>Additional ID documents</li>
+                   </ul>
+                 </div>
+               </CardContent>
+             </Card>
+           </div>
+         </TabsContent>
       </Tabs>
 
       {/* Client Chatbot */}
       <ClientChatbot />
+
+      {/* Loan Application Wizard */}
+      <LoanApplicationWizard
+        isOpen={isWizardOpen}
+        onClose={() => setIsWizardOpen(false)}
+        onSubmit={handleLoanApplication}
+      />
     </div>
   );
 }

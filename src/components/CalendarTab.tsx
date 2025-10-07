@@ -27,7 +27,7 @@ const mockEvents = [
     date: '2024-02-16',
     time: '2:00 PM',
     type: 'assessment',
-    client: 'Emily Davis'
+    borrower: 'Emily Davis'
   },
   {
     id: 4,
@@ -219,9 +219,9 @@ export function CalendarTab() {
                         <strong>Amount:</strong> {event.amount}
                       </div>
                     )}
-                    {event.client && (
+                    {event.borrower && (
                       <div className="text-sm">
-                        <strong>Client:</strong> {event.client}
+                        <strong>Borrower:</strong> {event.borrower}
                       </div>
                     )}
                     {event.location && (
